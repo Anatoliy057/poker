@@ -7,7 +7,7 @@ import stud.task.combination.domain.StraightComb;
 
 import java.util.List;
 
-public class StraightDeter implements CombDeter {
+public class StraightDeter extends AbstractCombDeter {
 
     public final int NUMBER_OF_CARDS = 5;
 

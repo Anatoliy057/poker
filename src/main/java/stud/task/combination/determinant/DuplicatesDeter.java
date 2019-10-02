@@ -10,7 +10,7 @@ import stud.task.combination.domain.TypicalComb;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DuplicatesDeter implements CombDeter {
+public class DuplicatesDeter extends AbstractCombDeter {
 
     private List<CardCombination> combs;
     private PlayingCards cards;

@@ -7,7 +7,7 @@ import stud.task.combination.domain.*;
 import java.util.List;
 import java.util.Optional;
 
-public class StraightFlushDeter implements CombDeter {
+public class StraightFlushDeter extends AbstractCombDeter {
 
     private FlushDeter flushFactory;
 

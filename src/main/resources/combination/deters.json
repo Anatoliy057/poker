@@ -1,0 +1,10 @@
+{
+  "prefix": "stud.task.combination.determinant.",
+  "postfix": "Deter",
+  "deters": [
+    "Duplicates",
+    "Flush",
+    "Straight",
+    "StraightFlush"
+  ]
+}

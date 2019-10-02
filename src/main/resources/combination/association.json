@@ -1,0 +1,108 @@
+{
+    "combs": {
+        "ROYAL_FLUSH": {
+            "as": [
+                "Royal_flush",
+                "Royal flush",
+                "Флеш рояль",
+                "Флеш_рояль",
+                "royal_flush",
+                "royal flush",
+                "флеш рояль",
+                "флеш_рояль"
+            ]
+        },
+        "STRAIGHT_FLUSH": {
+            "as": [
+                "Straight_flush",
+                "Straight flush",
+                "Стрит_флеш",
+                "Стрит флеш",
+                "straight_flush",
+                "straight flush",
+                "стрит_флеш",
+                "стрит флеш"
+            ]
+        },
+        "FOUR_KIND": {
+            "as": [
+                "Four_kind",
+                "Four kind",
+                "Каре",
+                "four_kind",
+                "four kind",
+                "каре"
+            ]
+        },
+        "FULL_HOUSE": {
+            "as": [
+                "Full_house",
+                "Full house",
+                "Фулл хауз",
+                "full_house",
+                "full house",
+                "фулл хауз"
+            ]
+        },
+        "FLUSH": {
+            "as": [
+                "Flush",
+                "Флеш",
+                "flush",
+                "флеш"
+            ]
+        },
+        "STRAIGHT": {
+            "as": [
+                "Straight",
+                "straight",
+                "Стрит",
+                "стрит"
+            ]
+        },
+        "THREE_KIND": {
+            "as": [
+                "Three_kind",
+                "Three kind",
+                "Тройка",
+                "three_kind",
+                "three kind",
+                "тройка"
+            ]
+        },
+        "TWO_PAIR": {
+            "as": [
+                "Two_pair",
+                "Two pair",
+                "Две_пары",
+                "Две пары",
+                "Допер",
+                "two_pair",
+                "two pair",
+                "две_пары",
+                "две пары",
+                "допер"
+            ]
+        },
+        "PAIR": {
+            "as": [
+                "Pair",
+                "Пара",
+                "pair",
+                "пара"
+            ]
+        },
+        "HIGH_CARD": {
+            "as": [
+                "High_card",
+                "High card",
+                "Старшая_карта",
+                "Старшая карта",
+                "high_card",
+                "high card",
+                "старшая_карта",
+                "старшая карта"
+            ]
+        }
+    }
+}

@@ -7,7 +7,7 @@ import stud.task.combination.domain.FlushComb;
 
 import java.util.*;
 
-public class FlushDeter implements CombDeter {
+public class FlushDeter extends AbstractCombDeter {
 
     public final static int NUMBER_OF_CARDS = 5;
 
