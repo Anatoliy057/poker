@@ -33,7 +33,7 @@ public class FlushDeter extends AbstractCombDeter {
     public List<CardCombination> get() {
         if (count < NUMBER_OF_CARDS) return empty();
         ListIterator<List<Card>> it = cards.listIterator();
-        while (it.hasNext()) {
+        while (it.hasPrevious()) {
             List<Card> l = it.previous();
             if (l.size() >= NUMBER_OF_CARDS) {
                 return of(create(l));

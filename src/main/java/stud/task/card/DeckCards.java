@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class DeckCards {
 
-    Queue<Card> deck;
+    private Queue<Card> deck;
 
     public DeckCards() {
         LinkedList<Card> deck = new LinkedList<>();
@@ -24,4 +24,9 @@ public class DeckCards {
     public Card pullOutCard() {
         return deck.poll();
     }
+
+    public boolean isEmpty() {
+        return deck.isEmpty();
+    }
+
 }

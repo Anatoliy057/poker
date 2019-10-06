@@ -1,5 +1,7 @@
 package stud.task.combination.domain;
 
+import stud.task.card.TypeCard;
+
 public class FullHouseComb extends AbstractCardComb {
 
     private final int lvl1, lvl2;
@@ -8,6 +10,10 @@ public class FullHouseComb extends AbstractCardComb {
         super(TypeCombination.FULL_HOUSE);
         this.lvl1 = lvl1;
         this.lvl2 = lvl2;
+    }
+
+    public FullHouseComb(TypeCard lvl1, TypeCard lvl2) {
+        this(lvl1.getLvl(), lvl2.getLvl());
     }
 
     @Override

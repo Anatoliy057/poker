@@ -1,5 +1,8 @@
 package stud.task.combination.domain;
 
+import stud.task.card.SuitCard;
+import stud.task.card.TypeCard;
+
 public class FlushComb extends AbstractCardComb {
 
     private final int max;
@@ -11,6 +14,10 @@ public class FlushComb extends AbstractCardComb {
         this.max = max;
         this.min = min;
         this.priority = priority;
+    }
+
+    public FlushComb(TypeCard max, TypeCard min, SuitCard suit) {
+        this(max.getLvl(), min.getLvl(), suit.getPriority());
     }
 
     @Override

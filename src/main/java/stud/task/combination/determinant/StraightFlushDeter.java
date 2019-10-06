@@ -37,6 +37,6 @@ public class StraightFlushDeter extends AbstractCombDeter {
         if (flushComb.getMin() == TypeCard.getMaxLvl()- FlushDeter.NUMBER_OF_CARDS + 1) {
             return new TypicalComb(TypeCombination.ROYAL_FLUSH, flushComb.getPriority());
         } else
-            return new StraightFlushComb(flushComb.getMax());
+            return new TypicalComb(TypeCombination.STRAIGHT_FLUSH, flushComb.getMax());
     }
 }

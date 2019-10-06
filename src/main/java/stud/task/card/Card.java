@@ -34,10 +34,10 @@ public class Card implements Comparable<Card> {
 
     @Override
     public int compareTo(Card o) {
-        int cLvl = getType().compareLvlTo(o.getType());
-        if (cLvl == 0) {
+        int comp = getType().compareLvlTo(o.getType());
+        if (comp == 0) {
             return getSuit().comparePriorTo(o.getSuit());
-        } else return cLvl;
+        } else return comp;
     }
 
     @Override
@@ -52,5 +52,13 @@ public class Card implements Comparable<Card> {
     @Override
     public int hashCode() {
         return Objects.hash(type, suit);
+    }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "type=" + type +
+                ", suit=" + suit +
+                '}';
     }
 }

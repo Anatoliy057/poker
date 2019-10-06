@@ -9,16 +9,22 @@ import java.util.Iterator;
 
 class NamesOfCombs {
 
-    private static HashMap<String, TypeCombination> as = new HashMap<>();
-    private static final String PATH_TO_ASSOCIATION_JSON = "combination/association.json";
+    private static NamesOfCombs ourInstance = new NamesOfCombs();
 
-    static {
-        final String fCombs = "combs";
-        final String fAs = "as";
+    public static NamesOfCombs getInstance() {
+        return ourInstance;
+    }
 
+    private HashMap<String, TypeCombination> as = new HashMap<>();
+    private final String PATH_TO_ASSOCIATION_JSON = "combination/association.json";
+
+    final String F_COMBS = "combs";
+    final String F_AS = "as";
+
+    private NamesOfCombs() {
         JsonResource parser = new JsonResource();
         JSONObject association = parser.objectFromFile(PATH_TO_ASSOCIATION_JSON)
-                .optJSONObject(fCombs);
+                .optJSONObject(F_COMBS);
         Iterator<String> it = association.keys();
         while (it.hasNext()) {
             String key = it.next();
@@ -32,16 +38,14 @@ class NamesOfCombs {
                 //todo warn
             }
             for (Object objAs :
-                    association.getJSONObject(key).getJSONArray(fAs)) {
+                    association.getJSONObject(key).getJSONArray(F_AS)) {
                 String name = objAs.toString();
                 as.put(name, type);
             }
         }
     }
 
-    private  NamesOfCombs() {}
-
-    static TypeCombination getType(String name) {
+    public TypeCombination getType(String name) {
         TypeCombination type = as.get(name);
         return type == null ? TypeCombination.UNKNOWN : type;
     }

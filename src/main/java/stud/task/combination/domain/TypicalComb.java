@@ -1,5 +1,7 @@
 package stud.task.combination.domain;
 
+import stud.task.card.TypeCard;
+
 public class TypicalComb extends AbstractCardComb {
 
     private int priority;
@@ -7,6 +9,10 @@ public class TypicalComb extends AbstractCardComb {
     public TypicalComb(TypeCombination type, int priority) {
         super(type);
         this.priority = priority;
+    }
+
+    public TypicalComb(TypeCombination typeComb, TypeCard typeCard) {
+        this(typeComb, typeCard.getLvl());
     }
 
     private int getPriority() {

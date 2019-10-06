@@ -27,5 +27,4 @@ public abstract class AbstractCombDeter implements CombDeter {
         }
         else return Optional.of(list.get(0));
     }
-
 }

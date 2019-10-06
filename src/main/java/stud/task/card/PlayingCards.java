@@ -24,7 +24,7 @@ public class PlayingCards implements Iterable<List<Card>> {
         }
     }
 
-    public LinkedList<Card> sotredListCard() {
+    public LinkedList<Card> sortedListCard() {
         LinkedList<Card> cards = new LinkedList<>();
         for (List<Card> l :
                 this.cards) {

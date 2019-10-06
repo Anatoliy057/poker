@@ -6,6 +6,8 @@ import stud.task.combination.domain.TypeCombination;
 import stud.task.service.JsonResource;
 import stud.task.util.Shell;
 
+import java.sql.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ public class FrameworkCombs {
     private static final String PATH_TO_SUBSTITUTION_JSON = "combination/substitution.json";
 
     private TypeCombination[][] src;
+    private NamesOfCombs namesOfCombs = NamesOfCombs.getInstance();
 
     private FrameworkCombs() {
         JsonResource parser = new JsonResource();
@@ -30,7 +33,7 @@ public class FrameworkCombs {
             src[i] = new TypeCombination[arr.length()];
             for (int j = 0; j < arr.length(); j++) {
                 String name = arr.getString(j);
-                src[i][j] = NamesOfCombs.getType(name);
+                src[i][j] = namesOfCombs.getType(name);
             }
         }
     }
@@ -38,8 +41,9 @@ public class FrameworkCombs {
     public Map<TypeCombination, Shell<CardCombination>> get() {
         HashMap<TypeCombination, Shell<CardCombination>> subst = new HashMap<>();
         for (TypeCombination[] typeCombinations : src) {
+            Shell<CardCombination> shell = new Shell<>();
             for (TypeCombination typeCombination : typeCombinations) {
-                subst.put(typeCombination, new Shell<>());
+                subst.put(typeCombination, shell);
             }
         }
         return subst;

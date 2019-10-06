@@ -1,5 +1,7 @@
 package stud.task.combination.domain;
 
+import stud.task.card.Card;
+
 public abstract class AbstractCardComb implements CardCombination {
 
     private TypeCombination type;
@@ -27,4 +29,11 @@ public abstract class AbstractCardComb implements CardCombination {
     }
 
     protected abstract int deepCompareTo(CardCombination o);
+
+    @Override
+    public String toString() {
+        return "AbstractCardComb{" +
+                "type=" + type +
+                '}';
+    }
 }
