@@ -39,11 +39,11 @@ public enum TypeCard {
     }
 
     public static int getMaxLvl() {
-        return TWO.getLvl();
+        return ACE.getLvl();
     }
 
     public static int getMinLvl() {
-        return ACE.getLvl();
+        return TWO.getLvl();
     }
 
     public static int getSum(TypeCard start, TypeCard end) {

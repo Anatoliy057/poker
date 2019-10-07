@@ -32,9 +32,8 @@ public class FlushDeter extends AbstractCombDeter {
     @Override
     public List<CardCombination> get() {
         if (count < NUMBER_OF_CARDS) return empty();
-        ListIterator<List<Card>> it = cards.listIterator();
-        while (it.hasPrevious()) {
-            List<Card> l = it.previous();
+        Collections.reverse(cards);
+        for (List<Card> l : cards) {
             if (l.size() >= NUMBER_OF_CARDS) {
                 return of(create(l));
             }
@@ -43,11 +42,8 @@ public class FlushDeter extends AbstractCombDeter {
     }
     
     private CardCombination create(List<Card> cards) {
-        for (Card c :
-                cards) {
-            max = Math.max(max, c.level());
-            min = Math.min(min, c.level());
-        }
-        return new FlushComb(max, min, cards.get(0).priority());
+        HashSet<Integer> set = new HashSet<>();
+        cards.forEach(c -> set.add(c.level()));
+        return new FlushComb(set, cards.get(0).priority());
     }
 }

@@ -6,8 +6,6 @@ import stud.task.combination.domain.TypeCombination;
 import stud.task.service.JsonResource;
 import stud.task.util.Shell;
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

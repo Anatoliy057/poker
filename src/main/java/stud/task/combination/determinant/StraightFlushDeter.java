@@ -4,39 +4,48 @@ import stud.task.card.Card;
 import stud.task.card.TypeCard;
 import stud.task.combination.domain.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class StraightFlushDeter extends AbstractCombDeter {
 
-    private FlushDeter flushFactory;
+    private FlushDeter flushDeter;
 
     public StraightFlushDeter() {
-        flushFactory = new FlushDeter();
+        flushDeter = new FlushDeter();
     }
 
     @Override
     public void add(Card card) {
-        flushFactory.add(card);
+        flushDeter.add(card);
     }
 
     @Override
     public List<CardCombination> get() {
-        Optional<CardCombination> opt = single(flushFactory.get());
-        if (opt.isPresent()) {
-            FlushComb flushComb = (FlushComb) opt.get();
-            if (flushComb.getMax() - flushComb.getMin() < FlushDeter.NUMBER_OF_CARDS) {
-                return of(royalOrStraightFlush(flushComb));
-            } else {
-                return of(flushComb);
+        List<CardCombination> flush = flushDeter.get();
+        if (!flush.isEmpty()) {
+            FlushComb flushComb = (FlushComb) flush.get(0);
+            List<Integer> levels = new ArrayList<>(flushComb.getLevels());
+            Collections.sort(levels);
+            int size = levels.size();
+            int length = levels.get(0) == TypeCard.getMinLvl()
+                    && levels.get(size - 1) == TypeCard.getMaxLvl() ? 1 : 0;
+            for (int i = 0; i < size - 1; i++) {
+                if (levels.get(i + 1) - levels.get(i) == 1) {
+                    length++;
+                } else if (length >= StraightDeter.NUMBER_OF_CARDS-1) {
+                    return of(new SingleCombination(TypeCombination.STRAIGHT_FLUSH, levels.get(i)));
+                } else length = 0;
             }
-        } else return empty();
+            if (length >= StraightDeter.NUMBER_OF_CARDS-1)
+                return of(royalOrStraightFlush(levels.get(size-1), flushComb.getPriority()));
+        }
+        return flush;
     }
 
-    private CardCombination royalOrStraightFlush(FlushComb flushComb) {
-        if (flushComb.getMin() == TypeCard.getMaxLvl()- FlushDeter.NUMBER_OF_CARDS + 1) {
-            return new TypicalComb(TypeCombination.ROYAL_FLUSH, flushComb.getPriority());
+    private CardCombination royalOrStraightFlush(int max, int priority) {
+        if (max == TypeCard.getMaxLvl()) {
+            return new SingleCombination(TypeCombination.ROYAL_FLUSH, priority);
         } else
-            return new TypicalComb(TypeCombination.STRAIGHT_FLUSH, flushComb.getMax());
+            return new SingleCombination(TypeCombination.STRAIGHT_FLUSH, max);
     }
 }

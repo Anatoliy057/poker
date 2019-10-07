@@ -49,7 +49,13 @@ public class PlayingCards implements Iterable<List<Card>> {
     public Iterator<List<Card>> iterator() {
         return new Iterator<List<Card>>() {
 
-            ListIterator<List<Card>> it = cards.listIterator();
+            ListIterator<List<Card>> it;
+
+            {
+                it = cards.listIterator();
+                while(it.hasNext())
+                    it.next();
+            }
 
             @Override
             public boolean hasNext() {

@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import stud.task.combination.domain.TypeCombination;
 import stud.task.service.JsonResource;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class NamesOfCombsTest {

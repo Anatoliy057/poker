@@ -28,9 +28,6 @@ class DeckCardsTest {
         assertEquals(list1.size(), TypeCard.length * SuitCard.length);
         assertEquals(list2.size(), TypeCard.length * SuitCard.length);
 
-        System.out.println(list1);
-        System.out.println(list2);
-
         assertNotEquals(list1, list2);
     }
 }
