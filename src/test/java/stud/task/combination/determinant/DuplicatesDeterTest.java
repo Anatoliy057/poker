@@ -18,7 +18,7 @@ class DuplicatesDeterTest {
     private CombDeter deter;
 
     @Test
-    void except_FOUR_KIND_and_FULL_HOUSE() {
+    void expect_FOUR_KIND_and_FULL_HOUSE() {
         DeckCards deckCards = new DeckCards();
         deter = new DuplicatesDeter();
         while (!deckCards.isEmpty()) {
@@ -37,7 +37,7 @@ class DuplicatesDeterTest {
     }
 
     @Test
-    void except_PAIR_and_THREE_and_FULL_HOUSE_and_TWO_PAIR() {
+    void expect_PAIR_and_THREE_and_FULL_HOUSE_and_TWO_PAIR() {
         deter = new DuplicatesDeter();
         Card[] card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(TWO, CLUBS),
@@ -72,7 +72,7 @@ class DuplicatesDeterTest {
     }
 
     @Test
-    void except_PAIR_and_TWO_PAIR() {
+    void expect_PAIR_and_TWO_PAIR() {
         deter = new DuplicatesDeter();
         Card[] card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(TWO, CLUBS),

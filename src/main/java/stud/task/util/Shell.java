@@ -1,8 +1,5 @@
 package stud.task.util;
 
-import stud.task.combination.domain.CardCombination;
-
-import java.util.Objects;
 import java.util.function.Function;
 
 public class Shell<T> {

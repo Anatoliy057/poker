@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DeckCardsTest {
 
     @Test
-    void exceptDifferentDecks() {
+    void expectDifferentDecks() {
         DeckCards deck = new DeckCards();
         List<Card> list1 = new LinkedList<>();
         List<Card> list2 = new LinkedList<>();

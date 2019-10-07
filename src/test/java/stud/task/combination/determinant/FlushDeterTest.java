@@ -21,7 +21,7 @@ class FlushDeterTest {
     private Card[] card;
 
     @Test
-    void exceptFlushClubsFromTwoToAce() {
+    void expectFlushClubsFromTwoToAce() {
         deter = new FlushDeter();
         card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(TWO, CLUBS),
@@ -45,7 +45,7 @@ class FlushDeterTest {
     }
 
     @Test
-    void exceptFlushDiamondsFromFiveToKing() {
+    void expectFlushDiamondsFromFiveToKing() {
         deter = new FlushDeter();
         card = new Card[]{new Card(FIVE, DIAMONDS),
                 new Card(TWO, CLUBS),
@@ -69,7 +69,7 @@ class FlushDeterTest {
     }
 
     @Test
-    void exceptEmpty() {
+    void expectEmpty() {
         deter = new FlushDeter();
         card = new Card[]{new Card(FIVE, DIAMONDS),
                 new Card(TWO, CLUBS),

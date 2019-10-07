@@ -16,7 +16,7 @@ class FactoryDetersTest {
     private JsonResource json = new JsonResource();
 
     @Test
-    void exceptDetersIndicatedInFile() {
+    void expectDetersIndicatedInFile() {
         List<CombDeter> listDeters = factory.create();
 
         JSONObject deters = json.objectFromFile("combination/deters.json");

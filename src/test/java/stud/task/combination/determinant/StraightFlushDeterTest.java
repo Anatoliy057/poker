@@ -24,7 +24,7 @@ class StraightFlushDeterTest {
     private Card[] card;
 
     @Test
-    void exceptStraightFlushFromAceToFive() {
+    void expectStraightFlushFromAceToFive() {
         deter = new StraightFlushDeter();
         card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(SEVEN, CLUBS),
@@ -47,7 +47,7 @@ class StraightFlushDeterTest {
     }
 
     @Test
-    void exceptFlushFromTwoToAce() {
+    void expectFlushFromTwoToAce() {
         deter = new StraightFlushDeter();
         card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(SEVEN, CLUBS),
@@ -70,7 +70,7 @@ class StraightFlushDeterTest {
     }
 
     @Test
-    void exceptRoyalFlushClubs() {
+    void expectRoyalFlushClubs() {
         deter = new StraightFlushDeter();
         card = new Card[]{new Card(QUEEN, CLUBS),
                 new Card(SEVEN, DIAMONDS),
@@ -93,7 +93,7 @@ class StraightFlushDeterTest {
     }
 
     @Test
-    void exceptEmpty() {
+    void expectEmpty() {
         deter = new StraightFlushDeter();
         card = new Card[]{new Card(QUEEN, DIAMONDS),
                 new Card(SEVEN, CLUBS),

@@ -22,7 +22,7 @@ class StraightDeterTest {
     private Card[] card;
 
     @Test
-    void exceptStraightFromAceToFive() {
+    void expectStraightFromAceToFive() {
         deter = new StraightDeter();
         card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(SEVEN, CLUBS),
@@ -44,7 +44,7 @@ class StraightDeterTest {
     }
 
     @Test
-    void exceptEmpty() {
+    void expectEmpty1() {
         deter = new StraightDeter();
         card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(SEVEN, CLUBS),
@@ -64,7 +64,7 @@ class StraightDeterTest {
     }
 
     @Test
-    void exceptStraightFromTenToAce() {
+    void expectStraightFromTenToAce() {
         deter = new StraightDeter();
         card = new Card[]{new Card(QUEEN, DIAMONDS),
                 new Card(SEVEN, CLUBS),
@@ -86,7 +86,7 @@ class StraightDeterTest {
     }
 
     @Test
-    void empty() {
+    void expectEmpty2() {
         deter = new StraightDeter();
         card = new Card[]{new Card(QUEEN, DIAMONDS),
                 new Card(SEVEN, CLUBS),
