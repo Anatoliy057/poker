@@ -1,6 +1,10 @@
 package stud.task.combination.domain;
 
+import stud.task.card.Card;
 import stud.task.card.TypeCard;
+
+import java.util.Collection;
+import java.util.List;
 
 public class SingleCombination extends AbstractCardComb {
 
@@ -13,6 +17,15 @@ public class SingleCombination extends AbstractCardComb {
 
     public SingleCombination(TypeCombination typeComb, TypeCard typeCard) {
         this(typeComb, typeCard.getLvl());
+    }
+
+    public SingleCombination(TypeCombination type, int priority, List<Card> cards) {
+        this(type, priority);
+        addAllCards(cards);
+    }
+
+    public SingleCombination(TypeCombination typeComb, TypeCard typeCard, List<Card> cards) {
+        this(typeComb, typeCard.getLvl(), cards);
     }
 
     public int getPriority() {

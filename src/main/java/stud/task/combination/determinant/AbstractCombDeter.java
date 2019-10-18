@@ -1,5 +1,6 @@
 package stud.task.combination.determinant;
 
+import stud.task.card.Card;
 import stud.task.combination.domain.CardCombination;
 
 import java.util.LinkedList;

@@ -29,12 +29,12 @@ public class ListComb {
     }
 
     public List<CardCombination> getAllCombs() {
-        List<CardCombination> combs = new ArrayList<>();
+        List<CardCombination> combs = new LinkedList<>();
         deters.forEach(d -> combs.addAll(d.get()));
         return combs;
     }
 
-    public  List<CardCombination> getCombs() {
+    public List<CardCombination> getCombs() {
         deters.forEach(d -> {
             List<CardCombination> list = d.get();
             for (CardCombination comb :
@@ -52,7 +52,7 @@ public class ListComb {
             }
         });
         Set<Shell<CardCombination>> set = new HashSet<>(subst.values());
-        List<CardCombination> combs = new ArrayList<>();
+        List<CardCombination> combs = new LinkedList<>();
         set.forEach(e -> combs.add(e.getValue()));
         return combs;
     }

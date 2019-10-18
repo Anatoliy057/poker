@@ -1,6 +1,10 @@
 package stud.task.combination.domain;
 
+import stud.task.card.Card;
 import stud.task.card.TypeCard;
+
+import java.util.Collection;
+import java.util.List;
 
 public class DoubleCombination extends AbstractCardComb {
 
@@ -14,6 +18,16 @@ public class DoubleCombination extends AbstractCardComb {
 
     public DoubleCombination(TypeCombination type, TypeCard lvl1, TypeCard lvl2) {
         this(type, lvl1.getLvl(), lvl2.getLvl());
+    }
+
+    public DoubleCombination(TypeCombination type, int lvl1, int lvl2, List<Card> cards) {
+        this(type, lvl1, lvl2);
+        addAllCards(cards);
+    }
+
+    public DoubleCombination(TypeCombination type, TypeCard lvl1, TypeCard lvl2, List<Card> cards) {
+        this(type, lvl1.getLvl(), lvl2.getLvl());
+        addAllCards(cards);
     }
 
     @Override

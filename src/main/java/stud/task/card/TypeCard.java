@@ -1,5 +1,8 @@
 package stud.task.card;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum TypeCard {
 
     /**
@@ -25,6 +28,14 @@ public enum TypeCard {
 
     private final int lvl;
     public final static int length = values().length;
+    private static final Map<Integer, TypeCard> map = new HashMap<>();
+
+    static {
+        for (TypeCard c :
+                values()) {
+            map.put(c.lvl, c);
+        }
+    }
 
     TypeCard(int lvl){
         this.lvl = lvl;
@@ -32,6 +43,10 @@ public enum TypeCard {
 
     public int getLvl() {
         return lvl;
+    }
+
+    public static TypeCard get(int n) {
+        return map.get(n);
     }
 
     public int compareLvlTo(TypeCard o) {

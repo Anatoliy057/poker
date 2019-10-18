@@ -4,23 +4,35 @@ import javafx.util.Pair;
 import stud.task.core.player.Storage;
 import stud.task.util.Shell;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Bank {
 
     private Map<Storage, Shell<Double>> participants;
     private double bank;
 
-    public Bank(List<Storage> players) {
+    public Bank() {
         bank = 0;
         participants = new HashMap<>();
-        for (Storage s :
-                players) {
-            participants.put(s, new Shell<>(0.0));
-        }
+    }
+
+    public Bank(Collection<Storage> storages) {
+        this();
+        addAll(storages);
+    }
+
+    public void reset(Collection<Storage> players) {
+        clear();
+        addAll(players);
+    }
+
+    public void clear() {
+        participants.clear();
+        bank = 0;
+    }
+
+    public void addAll(Collection<Storage> players) {
+        players.forEach(p -> participants.put(p, new Shell<>(0.0)));
     }
 
     public boolean putBy(Storage s, double pay) {
@@ -29,8 +41,8 @@ public class Bank {
             //todo error
             return false;
         }
-        boolean res = s.takeAway(pay);
-        if (!res) return false;
+        double delta = pay - shell.getValue();
+        if (!s.takeAway(delta)) return false;
         bank += pay;
         shell.func(p -> p+=pay);
         return true;

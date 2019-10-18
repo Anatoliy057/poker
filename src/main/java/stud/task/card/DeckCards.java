@@ -6,19 +6,31 @@ import java.util.Queue;
 
 public class DeckCards {
 
-    private Queue<Card> deck;
+    private LinkedList<Card> deck;
 
     public DeckCards() {
-        LinkedList<Card> deck = new LinkedList<>();
+        deck = new LinkedList<>();
+        load();
+    }
+
+    public void reset() {
+        deck.clear();
+        load();
+    }
+
+    public void clear() {
+        deck.clear();
+    }
+
+    private void load() {
         for (TypeCard l:
-             TypeCard.values()) {
+                TypeCard.values()) {
             for (SuitCard s :
                     SuitCard.values()) {
                 deck.add(new Card(l, s));
             }
         }
         Collections.shuffle(deck);
-        this.deck = deck;
     }
 
     public Card pullOutCard() {

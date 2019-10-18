@@ -1,10 +1,14 @@
 package stud.task.combination.domain;
 
+import com.sun.istack.internal.NotNull;
+import stud.task.card.Card;
 import stud.task.card.SuitCard;
 import stud.task.card.TypeCard;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 public class FlushComb extends AbstractCardComb {
 
@@ -26,11 +30,35 @@ public class FlushComb extends AbstractCardComb {
     }
 
     FlushComb(TypeCard max, TypeCard min, SuitCard suit) {
-        super(TypeCombination.FLUSH);
-        set = new HashSet<>();
-        set.add(max.getLvl());
-        set.add(min.getLvl());
-        this.priority = suit.getPriority();
+        this(max.getLvl(), min.getLvl(), suit.getPriority());
+    }
+
+    FlushComb(int max, int min, int priority, List<Card> cards) {
+        this(max, min, priority);
+        addAllCards(cards);
+
+    }
+
+    FlushComb(TypeCard max, TypeCard min, SuitCard suit, List<Card> cards) {
+        this(max.getLvl(), min.getLvl(), suit.getPriority());
+        addAllCards(cards);
+    }
+
+    public FlushComb(HashSet<Integer> set, int priority, List<Card> cards) {
+        this(set, priority);
+        addAllCards(cards);
+    }
+
+    @Override
+    public boolean addCard(Card card) {
+        return super.addCard(card);
+    }
+
+    @Override
+    public boolean addAllCards(List<Card> cards) {
+        boolean b =  super.addAllCards(cards);
+        Collections.sort(super.cards);
+        return b;
     }
 
     @Override

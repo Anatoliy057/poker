@@ -1,31 +1,31 @@
-package stud.task.combination;
+package stud.task.core;
 
 import org.json.JSONObject;
-import stud.task.combination.determinant.CombDeter;
+import stud.task.core.stages.Stage;
 import stud.task.service.JsonResource;
 import stud.task.util.FactoryObjects;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class FactoryDeters {
+public class FactoryStages {
 
-    private FactoryObjects<CombDeter> fc;
+    private FactoryObjects<Stage> fc;
 
-    private final String PATH_TO_DETERS = "combination/deters.json";
+    private final String PATH_TO_DETERS = "stage/stage.json";
     private final List<String> names;
 
-    private final String F_DETERS = "deters";
+    private final String F_DETERS = "stages";
     private final String F_PREFIX = "prefix";
     private final String F_POSTFIX = "postfix";
 
-    private static FactoryDeters ourInstance = new FactoryDeters();
+    private static FactoryStages ourInstance = new FactoryStages();
 
-    public static FactoryDeters getInstance() {
+    public static FactoryStages getInstance() {
         return ourInstance;
     }
 
-    private FactoryDeters() {
+    private FactoryStages() {
         fc = new FactoryObjects<>();
         names = new LinkedList<>();
         JsonResource parser = new JsonResource();
@@ -37,7 +37,7 @@ public class FactoryDeters {
         );
     }
 
-    public List<CombDeter> create() {
+    public List<Stage> create() {
         return fc.create(names);
     }
 }

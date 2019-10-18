@@ -6,22 +6,23 @@ import stud.task.combination.domain.CardCombination;
 import stud.task.combination.domain.TypeCombination;
 import stud.task.combination.domain.SingleCombination;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class StraightDeter extends AbstractCombDeter {
 
     public static final int NUMBER_OF_CARDS = 5;
 
     private HashSet<Integer> levels = new HashSet<>();
+    private List<Card> uniqueCards = new ArrayList<>();
     private int count = 0;
 
     @Override
     public void add(Card card) {
-        levels.add(card.level());
-        count++;
+        if (levels.add(card.level())) {
+            count++;
+            uniqueCards.add(card);
+            Collections.sort(uniqueCards);
+        }
     }
 
     @Override
@@ -36,14 +37,23 @@ public class StraightDeter extends AbstractCombDeter {
             if (arr.get(i+1) - arr.get(i) == 1) {
                 length++;
             } else if (length >= NUMBER_OF_CARDS-1) {
-                return of(new SingleCombination(TypeCombination.STRAIGHT, arr.get(i)));
+                return of(create(arr.get(i)));
             } else {
                 length = 0;
             }
         }
         if (length >= NUMBER_OF_CARDS-1)
-            return of(new SingleCombination(TypeCombination.STRAIGHT, arr.get(size-1)));
+            return of(create(arr.get(size-1)));
         else
             return empty();
+    }
+
+    private CardCombination create(int max) {
+        for (int i = 0; i < uniqueCards.size(); i++) {
+            if (uniqueCards.get(i).level() == max) {
+                return new SingleCombination(TypeCombination.STRAIGHT, max, uniqueCards.subList(i-5, i));
+            }
+        }
+        return null;
     }
 }

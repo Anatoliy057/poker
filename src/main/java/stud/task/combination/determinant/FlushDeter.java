@@ -44,6 +44,6 @@ public class FlushDeter extends AbstractCombDeter {
     private CardCombination create(List<Card> cards) {
         HashSet<Integer> set = new HashSet<>();
         cards.forEach(c -> set.add(c.level()));
-        return new FlushComb(set, cards.get(0).priority());
+        return new FlushComb(set, cards.get(0).priority(), cards);
     }
 }

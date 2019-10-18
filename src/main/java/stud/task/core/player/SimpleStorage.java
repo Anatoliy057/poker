@@ -13,9 +13,14 @@ public class SimpleStorage implements Storage {
         id = UUID.randomUUID();
     }
 
+    private SimpleStorage(UUID id, double purse) {
+        this.id = id;
+        this.purse = purse;
+    }
+
     @Override
     public boolean takeAway(double sum) {
-        if (purse - sum < 0)
+        if (purse - sum < 0 && sum > 0)
             return false;
         else
             purse -= sum;
@@ -27,8 +32,21 @@ public class SimpleStorage implements Storage {
         purse += sum;
     }
 
+    @Override
     public double getPurse() {
         return purse;
+    }
+
+    @Override
+    public double takeAll() {
+        double temp = purse;
+        purse = 0;
+        return temp;
+    }
+
+    @Override
+    public Storage clone() {
+        return new SimpleStorage(this.id, purse);
     }
 
     @Override

@@ -2,10 +2,7 @@ package stud.task.combination.determinant;
 
 import stud.task.card.Card;
 import stud.task.card.PlayingCards;
-import stud.task.combination.domain.CardCombination;
-import stud.task.combination.domain.DoubleCombination;
-import stud.task.combination.domain.TypeCombination;
-import stud.task.combination.domain.SingleCombination;
+import stud.task.combination.domain.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -88,6 +85,7 @@ public class DuplicatesDeter extends AbstractCombDeter {
                 cards) {
             int level;
             TypeCombination type;
+            List<Card> cards;
             switch (list.size()) {
                 case 0:
                     continue;
@@ -116,13 +114,19 @@ public class DuplicatesDeter extends AbstractCombDeter {
                     type = UNKNOWN;
                     level = -1;
             }
-            combs.add(create(type, level));
+            combs.add(create(type, level, list));
             if (!fullHouse.isEmpty()) {
-                combs.add(new DoubleCombination(FULL_HOUSE, fullHouse.lvl1(), fullHouse.lvl2()));
+                AbstractCardComb aComb = new DoubleCombination(FULL_HOUSE, fullHouse.lvl1(), fullHouse.lvl2());
+                aComb.addAllCards(fullHouse.list1.subList(0, 3));
+                aComb.addAllCards(fullHouse.list2.subList(0, 2));
+                combs.add(aComb);
                 fullHouse.clear();
             }
             if (!twoPair.isEmpty()) {
-                combs.add(new DoubleCombination(TWO_PAIR, twoPair.lvl1(), twoPair.lvl2()));
+                AbstractCardComb aComb = new DoubleCombination(TWO_PAIR, twoPair.lvl1(), twoPair.lvl2());
+                aComb.addAllCards(twoPair.list1.subList(0, 2));
+                aComb.addAllCards(twoPair.list2.subList(0, 2));
+                combs.add(aComb);
                 twoPair.clear();
             }
         }
@@ -131,5 +135,9 @@ public class DuplicatesDeter extends AbstractCombDeter {
 
     private SingleCombination create(TypeCombination type, int lvl) {
         return new SingleCombination(type, lvl);
+    }
+
+    private SingleCombination create(TypeCombination type, int lvl, List<Card> cards) {
+        return new SingleCombination(type, lvl, cards);
     }
 }

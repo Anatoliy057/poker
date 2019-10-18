@@ -1,0 +1,17 @@
+{
+    "prefix" : "stud.task.core.stage.",
+    "postfix" : "Stage.java",
+    "stage" : [
+        "InitTexasHoldem",
+        "Blind",
+        "PreFlop",
+        "Trade",
+        "Flop",
+        "Trade",
+        "Turn",
+        "Trade",
+        "River",
+        "Trade",
+        "Showdown"
+    ]
+}
