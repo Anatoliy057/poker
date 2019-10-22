@@ -16,14 +16,14 @@ public class BlindStage implements Stage {
         Optional<Object> optPlayers = gi.getItem("queue_curPlayers");
         LinkedList<Player> curPlayers = (LinkedList<Player>) optPlayers.get();
         Player p = curPlayers.getFirst();
-        while (p.getStorage().takeAway(smallBlind)) {
+        while (p.getStorage().pull(smallBlind)) {
             curPlayers.removeFirst();
             gi.getPlayers().remove(p);
             p = curPlayers.getFirst();
         }
         c.messageBy(p, "Поставил малый блайнд");
         p = curPlayers.get(1);
-        while (p.getStorage().takeAway(highBlind)) {
+        while (p.getStorage().pull(highBlind)) {
             curPlayers.remove(1);
             gi.getPlayers().remove(p);
             p = curPlayers.get(1);

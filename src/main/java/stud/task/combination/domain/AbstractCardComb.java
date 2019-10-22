@@ -12,13 +12,13 @@ public abstract class AbstractCardComb implements CardCombination {
     private TypeCombination type;
     protected List<Card> cards;
 
-    public AbstractCardComb(TypeCombination type) {
+    public AbstractCardComb(TypeCombination type, List<Card> cards) {
         this.type = type;
-        cards = new LinkedList<>();
+        this.cards = new LinkedList<>(cards);
     }
 
     @Override
-    public Collection<Card> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 
@@ -29,14 +29,6 @@ public abstract class AbstractCardComb implements CardCombination {
 
     protected void setType(TypeCombination type) {
         this.type = type;
-    }
-
-    public boolean addCard(@NotNull Card card) {
-        return cards.add(card);
-    }
-
-    public boolean addAllCards(@NotNull List<Card> cards) {
-        return this.cards.addAll(cards);
     }
 
     @Override

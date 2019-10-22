@@ -1,91 +1,67 @@
 package stud.task.core;
 
-import javafx.util.Pair;
 import stud.task.core.player.Storage;
-import stud.task.util.Shell;
+import stud.task.util.Container;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Bank {
 
-    private Map<Storage, Shell<Double>> participants;
-    private double bank;
+    private Map<UUID, Container<Long>> participants;
+    private long bank = 0;
 
-    public Bank() {
-        bank = 0;
+    public Bank(Collection<UUID> ids) {
         participants = new HashMap<>();
+        ids.forEach(id -> participants.put(id, new Container<>((long) 0)));
     }
 
-    public Bank(Collection<Storage> storages) {
-        this();
-        addAll(storages);
+    public double getBank() {
+        return bank;
     }
 
-    public void reset(Collection<Storage> players) {
-        clear();
-        addAll(players);
-    }
-
-    public void clear() {
-        participants.clear();
-        bank = 0;
-    }
-
-    public void addAll(Collection<Storage> players) {
-        players.forEach(p -> participants.put(p, new Shell<>(0.0)));
-    }
-
-    public boolean putBy(Storage s, double pay) {
-        Shell<Double> shell = participants.get(s);
-        if (shell == null) {
-            //todo error
-            return false;
+    public void setBy(UUID id, long bet) {
+        double oldBet = 0;
+        try {
+            Container<Long> c = participants.get(id);
+            oldBet = c.getValue();
+            c.setValue(bet);
+        } catch (NullPointerException e) {
+            //todo exception
         }
-        double delta = pay - shell.getValue();
-        if (!s.takeAway(delta)) return false;
-        bank += pay;
-        shell.func(p -> p+=pay);
-        return true;
+        increase(bet - oldBet);
     }
 
-    public void bankTaking(List<Storage> winners) {
-        LinkedList<Pair<Storage, Double>> percents = new LinkedList<>();
-        double oldBank = bank;
-        double sumPercent = 0;
-        double sumBet = 0;
-        for (Storage s :
-                winners) {
-            Shell<Double> shell = participants.get(s);
-            if (shell == null) {
-                //todo error
-                return;
-            }
-            double bet = shell.getValue();
-            double percent = bet / bank;
-            sumPercent += percent;
-            percents.add(new Pair<>(s, percent));
-            s.give(bet);
-            sumBet += bet;
+    public void addBy(UUID id, long pay) {
+        try {
+            participants.get(id).conversion(d -> d+pay);
+        } catch (NullPointerException e) {
+            //todo exception
         }
-        bank -= sumBet;
-        while (bank >= 0) {
-            double cSum = 0;
-            boolean ceil = false, floor = false;
-            for (Pair<Storage, Double> s :
-                    percents) {
-                double prize = bank * (s.getValue() / sumPercent);
-                if (s.getValue() >= oldBank / participants.size()) {
-                    prize = Math.ceil(prize);
-                    if (prize < 0.5) ceil = true;
-                } else {
-                    prize = Math.floor(prize);
-                    if(prize < 1) floor = true;
+        increase(pay);
+    }
+
+    public void distribute(Map<UUID, Storage> winners) {
+        long prize = bank/winners.size();
+        AtomicReference<Storage> first = null;
+        winners.forEach((id, s) -> {
+            if (participants.containsKey(id)) {
+                if (first.get() == null) {
+                    first.set(s);
                 }
-                cSum += prize;
-                s.getKey().give(prize);
+                s.give(prize);
+            } else {
+                //todo exception
             }
-            bank -= cSum;
-            if (ceil || floor) break;
+        });
+        long temp = bank - prize*winners.size();
+        first.get().give(temp);
+    }
+
+    private void increase(double sum) {
+        if (sum < 0) {
+            //todo exception
         }
+        bank += sum;
     }
 }

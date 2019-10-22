@@ -2,11 +2,9 @@ package stud.task.combination.determinant;
 
 import org.junit.jupiter.api.Test;
 import stud.task.card.Card;
-import stud.task.combination.domain.CardCombination;
-import stud.task.combination.domain.FlushComb;
+import stud.task.combination.domain.DoubleCombination;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static stud.task.card.SuitCard.*;
@@ -16,8 +14,7 @@ import static stud.task.card.TypeCard.ACE;
 class FlushDeterTest {
 
     private CombDeter deter = new FlushDeter();
-    private List<CardCombination> list;
-    private FlushComb flush;
+    private DoubleCombination flush;
     private Card[] card;
 
     @Test
@@ -36,12 +33,12 @@ class FlushDeterTest {
                 new Card(FIVE, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        list = deter.get();
-        flush = (FlushComb) list.get(0);
+        flush = (DoubleCombination) deter.get();
 
-        assertEquals(flush.getPriority(), 0);
-        assertEquals(flush.getMax(), ACE.getLvl());
-        assertEquals(flush.getMin(), TWO.getLvl());
+        assertNotNull(flush);
+        assertEquals(flush.getLvl1(), ACE.getLvl());
+        assertEquals(flush.getLvl2(), TWO.getLvl());
+        assertEquals(flush.getCards().size(), FlushDeter.NUMBER_OF_CARDS);
     }
 
     @Test
@@ -56,16 +53,27 @@ class FlushDeterTest {
                 new Card(SIX, DIAMONDS),
                 new Card(JACK, DIAMONDS),
                 new Card(ACE, CLUBS),
-                new Card(JACK, DIAMONDS),
                 new Card(FIVE, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        list = deter.get();
-        flush = (FlushComb) list.get(0);
+        flush = (DoubleCombination) deter.get();
+        assertNotNull(flush);
 
-        assertEquals(flush.getPriority(), DIAMONDS.getPriority());
-        assertEquals(flush.getMax(), KING.getLvl());
-        assertEquals(flush.getMin(), FIVE.getLvl());
+        assertEquals(flush.getLvl1(), KING.getLvl());
+        assertEquals(flush.getLvl2(), FIVE.getLvl());
+        assertEquals(flush.getCards().size(), FlushDeter.NUMBER_OF_CARDS);
+        assertEquals(flush.getCards().size(), StraightDeter.NUMBER_OF_CARDS);
+        assertTrue(
+                Arrays.asList(new Card[]
+                        {
+                                new Card(FIVE, DIAMONDS),
+                                new Card(TEN, DIAMONDS),
+                                new Card(JACK, DIAMONDS),
+                                new Card(SIX, DIAMONDS),
+                                new Card(KING, DIAMONDS)
+                        }
+                ).containsAll(flush.getCards())
+        );
     }
 
     @Test
@@ -81,6 +89,6 @@ class FlushDeterTest {
                 new Card(FIVE, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        assertTrue(deter.get().isEmpty());
+        assertNull(deter.get());
     }
 }

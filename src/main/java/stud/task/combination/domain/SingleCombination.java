@@ -1,6 +1,7 @@
 package stud.task.combination.domain;
 
 import stud.task.card.Card;
+import stud.task.card.SuitCard;
 import stud.task.card.TypeCard;
 
 import java.util.Collection;
@@ -8,24 +9,19 @@ import java.util.List;
 
 public class SingleCombination extends AbstractCardComb {
 
-    private int priority;
+    private final int priority;
 
-    public SingleCombination(TypeCombination type, int priority) {
-        super(type);
+    public SingleCombination(TypeCombination type, int priority, List<Card> cards) {
+        super(type, cards);
         this.priority = priority;
     }
 
-    public SingleCombination(TypeCombination typeComb, TypeCard typeCard) {
-        this(typeComb, typeCard.getLvl());
+    public SingleCombination(TypeCombination type, TypeCard typeCard, List<Card> cards) {
+        this(type, typeCard.getLvl(), cards);
     }
 
-    public SingleCombination(TypeCombination type, int priority, List<Card> cards) {
-        this(type, priority);
-        addAllCards(cards);
-    }
-
-    public SingleCombination(TypeCombination typeComb, TypeCard typeCard, List<Card> cards) {
-        this(typeComb, typeCard.getLvl(), cards);
+    public SingleCombination(TypeCombination type, SuitCard suitCard, List<Card> cards) {
+        this(type, suitCard.getPriority(), cards);
     }
 
     public int getPriority() {

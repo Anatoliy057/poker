@@ -5,6 +5,7 @@ import stud.task.card.DeckCards;
 import stud.task.control.Controller;
 import stud.task.core.GameItems;
 import stud.task.core.player.Player;
+
 import java.util.LinkedList;
 
 public class TurnStage implements Stage {
@@ -18,7 +19,7 @@ public class TurnStage implements Stage {
         c.cardTable(table);
         for (Player p :
                 curPlayers) {
-            p.addAllCard(table);
+            table.forEach(p::addCard);
         }
     }
 }

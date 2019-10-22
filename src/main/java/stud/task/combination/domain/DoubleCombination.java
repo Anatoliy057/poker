@@ -1,6 +1,7 @@
 package stud.task.combination.domain;
 
 import stud.task.card.Card;
+import stud.task.card.SuitCard;
 import stud.task.card.TypeCard;
 
 import java.util.Collection;
@@ -10,24 +11,26 @@ public class DoubleCombination extends AbstractCardComb {
 
     private final int lvl1, lvl2;
 
-    public DoubleCombination(TypeCombination type, int lvl1, int lvl2) {
-        super(type);
+    public DoubleCombination(TypeCombination type, int lvl1, int lvl2, List<Card> cards) {
+        super(type, cards);
         this.lvl1 = lvl1;
         this.lvl2 = lvl2;
     }
 
-    public DoubleCombination(TypeCombination type, TypeCard lvl1, TypeCard lvl2) {
-        this(type, lvl1.getLvl(), lvl2.getLvl());
-    }
-
-    public DoubleCombination(TypeCombination type, int lvl1, int lvl2, List<Card> cards) {
-        this(type, lvl1, lvl2);
-        addAllCards(cards);
-    }
-
     public DoubleCombination(TypeCombination type, TypeCard lvl1, TypeCard lvl2, List<Card> cards) {
-        this(type, lvl1.getLvl(), lvl2.getLvl());
-        addAllCards(cards);
+        this(type, lvl1.getLvl(), lvl2.getLvl(), cards);
+    }
+
+    public DoubleCombination(TypeCombination type, SuitCard lvl1, SuitCard lvl2, List<Card> cards) {
+        this(type, lvl1.getPriority(), lvl2.getPriority(), cards);
+    }
+
+    public DoubleCombination(TypeCombination type, TypeCard lvl1, SuitCard lvl2, List<Card> cards) {
+        this(type, lvl1.getLvl(), lvl2.getPriority(), cards);
+    }
+
+    public DoubleCombination(TypeCombination type, SuitCard lvl1, TypeCard lvl2, List<Card> cards) {
+        this(type, lvl1.getPriority(), lvl2.getLvl(), cards);
     }
 
     @Override

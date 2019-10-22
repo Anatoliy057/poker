@@ -19,7 +19,7 @@ public class RiverStage implements Stage {
         c.cardTable(table);
         for (Player p :
                 curPlayers) {
-            p.addAllCard(table);
+            table.forEach(p::addCard);
         }
     }
 }

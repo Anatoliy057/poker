@@ -4,8 +4,7 @@ import stud.task.card.Card;
 import stud.task.card.PlayingCards;
 import stud.task.combination.domain.*;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static stud.task.combination.domain.TypeCombination.*;
 
@@ -13,61 +12,10 @@ public class DuplicatesDeter extends AbstractCombDeter {
 
     private PlayingCards cards;
 
-    private class FullHouse {
-        List<Card> list1;
-        List<Card> list2;
-
-        void add(List<Card> list) {
-            switch (list.size()) {
-                case 4:
-                    if (list2 == null || this.list2.get(0).level() < list2.get(0).level()) {
-                        list2 = list;
-                        break;
-                    }
-                case 3:
-                    if (list2 == null || this.list2.get(0).level() < list2.get(0).level()) {
-                        list2 = list;
-                        break;
-                    }
-                case 2:
-                    if (list1 == null || this.list1.get(0).level() < list1.get(0).level()) {
-                        list1 = list;
-                        break;
-                    }
-                    break;
-            }
-        }
-        boolean isEmpty() {
-            return list1 == null || list2 == null || list1.isEmpty() || list2.isEmpty();
-        }
-
-        int lvl1() {
-            return list2.get(0).level();
-        }
-
-        int lvl2() {
-            return list1.get(0).level();
-        }
-
-        void clear() {
-            list1 = list2 = null;
-        }
-    }
-
-    private class TwoPair extends FullHouse {
-
-        void add(List<Card> list) {
-            if (list1 == null || list.get(0).level() > list1.get(0).level()) {
-                list2 = list1;
-                list1 = list;
-            } else if (list2 == null || list.get(0).level() > list2.get(0).level()) {
-                list2 = list;
-            }
-        }
-    }
-
-    private FullHouse fullHouse = new FullHouse();
-    private TwoPair twoPair = new TwoPair();
+    private Queue<List<Card>> pairs = new PriorityQueue<>(
+            Comparator.comparingInt(l -> -l.get(0).level()));
+    private Queue<List<Card>> triples = new PriorityQueue<>(
+            Comparator.comparingInt(l -> -l.get(0).level()));
 
     public DuplicatesDeter() {
         cards = new PlayingCards();
@@ -79,65 +27,81 @@ public class DuplicatesDeter extends AbstractCombDeter {
     }
 
     @Override
-    public List<CardCombination> get() {
-        List<CardCombination> combs = new LinkedList<>();
+    public CardCombination get() {
+        Queue<CardCombination> combs = new PriorityQueue<>((c1, c2) -> -c1.compareTo(c2));
         for (List<Card> list :
                 cards) {
             int level;
             TypeCombination type;
-            List<Card> cards;
             switch (list.size()) {
-                case 0:
-                    continue;
-                case 1:
-                    type = HIGH_CARD;
-                    level = list.get(0).level();
-                    break;
                 case 2:
                     type = PAIR;
                     level = list.get(0).level();
-                    fullHouse.add(list);
-                    twoPair.add(list);
+                    pairs.add(list);
                     break;
                 case 3:
                     type = THREE_KIND;
                     level = list.get(0).level();
-                    fullHouse.add(list);
-                    twoPair.add(list);
+                    triples.add(list);
                     break;
                 case 4:
                     type = FOUR_KIND;
                     level = list.get(0).level();
-                    fullHouse.add(list);
                     break;
                 default:
-                    type = UNKNOWN;
-                    level = -1;
+                    continue;
             }
-            combs.add(create(type, level, list));
-            if (!fullHouse.isEmpty()) {
-                AbstractCardComb aComb = new DoubleCombination(FULL_HOUSE, fullHouse.lvl1(), fullHouse.lvl2());
-                aComb.addAllCards(fullHouse.list1.subList(0, 3));
-                aComb.addAllCards(fullHouse.list2.subList(0, 2));
-                combs.add(aComb);
-                fullHouse.clear();
+            combs.add(createSingle(type, level, list));
+            if (pairs.size() > 0 && triples.size() > 0) {
+                List<Card> pair = pairs.poll();
+                List<Card> triple = triples.poll();
+                combs.add(createDouble(
+                        FULL_HOUSE,
+                        triple.get(0).level(),
+                        pair.get(0).level(),
+                        concat(triple, pair)
+                ));
             }
-            if (!twoPair.isEmpty()) {
-                AbstractCardComb aComb = new DoubleCombination(TWO_PAIR, twoPair.lvl1(), twoPair.lvl2());
-                aComb.addAllCards(twoPair.list1.subList(0, 2));
-                aComb.addAllCards(twoPair.list2.subList(0, 2));
-                combs.add(aComb);
-                twoPair.clear();
+            if (triples.size() > 0) {
+                List<Card> triple = triples.poll();
+                combs.add(createSingle(
+                        THREE_KIND,
+                        triple.get(0).level(),
+                        triple
+                        ));
+            }
+            if (pairs.size() > 1) {
+                List<Card> pairHigh = pairs.poll();
+                List<Card> pairSmall = pairs.poll();
+                combs.add(createDouble(
+                        TWO_PAIR,
+                        pairHigh.get(0).level(),
+                        pairSmall.get(0).level(),
+                        concat(pairHigh, pairSmall)
+                ));
             }
         }
-        return combs;
+        return combs.poll();
     }
 
-    private SingleCombination create(TypeCombination type, int lvl) {
-        return new SingleCombination(type, lvl);
+    @Override
+    public void clear() {
+        triples.clear();
+        pairs.clear();
+        cards.clear();
     }
 
-    private SingleCombination create(TypeCombination type, int lvl, List<Card> cards) {
+    private SingleCombination createSingle(TypeCombination type, int lvl, List<Card> cards) {
         return new SingleCombination(type, lvl, cards);
+    }
+
+    private DoubleCombination createDouble(TypeCombination type, int lvl1, int lvl2, List<Card> cards) {
+        return new DoubleCombination(type, lvl1, lvl2, cards);
+    }
+
+    private List<Card> concat(List<Card> l1, List<Card> l2) {
+        LinkedList<Card> concat = new LinkedList<>(l1);
+        concat.addAll(l2);
+        return concat;
     }
 }

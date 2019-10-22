@@ -6,7 +6,7 @@ import java.util.StringJoiner;
 public class Action {
 
     private TypeAction type;
-    private Object v;
+    private Object addition;
 
     public Action(TypeAction type) {
         this.type = type;
@@ -20,12 +20,16 @@ public class Action {
         return type;
     }
 
-    public Object getV() {
-        return v;
+    public Object getAddition() {
+        return addition;
     }
 
-    public void setV(Object v) {
-        this.v = v;
+    public void setAddition(Object addition) {
+        this.addition = addition;
+    }
+
+    public boolean hasAddition() {
+        return type.isAddition();
     }
 
     @Override
@@ -34,19 +38,19 @@ public class Action {
         if (o == null || getClass() != o.getClass()) return false;
         Action action = (Action) o;
         return type == action.type &&
-                Objects.equals(v, action.v);
+                Objects.equals(addition, action.addition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, v);
+        return Objects.hash(type, addition);
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", Action.class.getSimpleName() + "[", "]")
                 .add("type=" + type)
-                .add("v=" + v)
+                .add("addition=" + addition)
                 .toString();
     }
 }

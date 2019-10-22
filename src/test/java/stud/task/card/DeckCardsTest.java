@@ -19,7 +19,7 @@ class DeckCardsTest {
             list1.add(deck.pullOutCard());
         }
 
-        deck = new DeckCards();
+        deck.reset();
         while (!deck.isEmpty()) {
             list2.add(deck.pullOutCard());
         }

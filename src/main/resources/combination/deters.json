@@ -1,7 +1,7 @@
 {
   "prefix": "stud.task.combination.determinant.",
   "postfix": "Deter",
-  "deters": [
+  "objects": [
     "Duplicates",
     "Flush",
     "Straight",

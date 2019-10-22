@@ -1,31 +1,83 @@
 package stud.task.core.player;
 
 import stud.task.card.Card;
+import stud.task.combination.ListComb;
+import stud.task.combination.determinant.CombDeter;
 import stud.task.combination.domain.CardCombination;
 
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-public interface Player {
+public class Player {
 
-    Storage getStorage();
+    private UUID id;
+    private Storage storage;
+    private Chooser chooser;
+    private DeskPlayer deskPlayer;
+    private Collection<Card> cards;
 
-    DeskPlayer getDeskPlayer();
+    private ListComb combs;
 
-    Chooser getChooser();
-
-    Collection<Card> getCards();
-
-    boolean isCan();
-
-    List<CardCombination> getCombs();
-
-    void addCard(Card card);
-
-    default void addAllCard(Collection<Card> card) {
-        card.forEach(this::addCard);
+    public Player(Storage storage, Chooser chooser, DeskPlayer deskPlayer, List<CombDeter> deters) {
+        this.storage = storage;
+        this.deskPlayer = deskPlayer;
+        this.chooser = chooser;
+        combs = new ListComb(deters);
+        cards = new LinkedList<>();
+        id = UUID.randomUUID();
     }
 
-    void clear();
+    public Storage getStorage() {
+        return storage;
+    }
 
+    public DeskPlayer getDeskPlayer() {
+        return deskPlayer;
+    }
+
+    public Chooser getChooser() {
+        return chooser;
+    }
+
+    public Collection<Card> getCards() {
+        return cards;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void addCard(Card card) {
+        cards.add(card);
+        combs.add(card);
+    }
+
+    public List<CardCombination> getCombs() {
+        return combs.getAllCombs();
+    }
+
+    public void clear() {
+        combs.clear();
+        cards.clear();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player that = (Player) o;
+        return storage.equals(that.storage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storage);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Player{");
+        sb.append("deskPlayer=").append(deskPlayer);
+        sb.append('}');
+        return sb.toString();
+    }
 }

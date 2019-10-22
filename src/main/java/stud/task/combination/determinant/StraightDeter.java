@@ -12,48 +12,76 @@ public class StraightDeter extends AbstractCombDeter {
 
     public static final int NUMBER_OF_CARDS = 5;
 
-    private HashSet<Integer> levels = new HashSet<>();
-    private List<Card> uniqueCards = new ArrayList<>();
+    private HashSet<Integer> setLevels = new HashSet<>();
+    private HashMap<Integer, Card> cardsToLvl = new HashMap<>();
     private int count = 0;
 
     @Override
     public void add(Card card) {
-        if (levels.add(card.level())) {
+        if (setLevels.add(card.level())) {
             count++;
-            uniqueCards.add(card);
-            Collections.sort(uniqueCards);
+            cardsToLvl.put(card.level(), card);
         }
     }
 
     @Override
-    public List<CardCombination> get() {
-        if (count < NUMBER_OF_CARDS) return empty();
-        List<Integer> arr = new ArrayList<>(levels);
-        Collections.sort(arr);
-        int size = arr.size();
-        int length = arr.get(size-1) == TypeCard.getMaxLvl() &&
-                arr.get(0) == TypeCard.getMinLvl() ? 1 : 0;
-        for (int i = 0; i < size-1; i++) {
-            if (arr.get(i+1) - arr.get(i) == 1) {
-                length++;
-            } else if (length >= NUMBER_OF_CARDS-1) {
-                return of(create(arr.get(i)));
+    public CardCombination get() {
+        if (count < NUMBER_OF_CARDS) return null;
+
+        ArrayList<Integer> levels = new ArrayList<>(setLevels);
+        Collections.sort(levels);
+
+        int start = levels.get(0);
+        int length = 1;
+        int cstart = levels.get(0);
+        int clength = 1;
+
+        for (int i = 0; i < levels.size() - 1; i++) {
+            if (levels.get(i + 1) - levels.get(i) == 1) {
+                clength++;
             } else {
-                length = 0;
+                if (clength > length) {
+                    length = clength;
+                    start = cstart;
+                }
+                clength = 1;
+                cstart = levels.get(i + 1);
             }
         }
-        if (length >= NUMBER_OF_CARDS-1)
-            return of(create(arr.get(size-1)));
-        else
-            return empty();
+
+        if (clength > length) {
+            length = clength;
+            start = cstart;
+        }
+
+        if (length >= NUMBER_OF_CARDS) {
+            start -= length - NUMBER_OF_CARDS;
+            LinkedList<Card> cards = new LinkedList<>();
+            for (int i = start; i < start + NUMBER_OF_CARDS; i++) {
+                cards.add(cardsToLvl.get(i));
+            }
+            return create(start + NUMBER_OF_CARDS - 1, cards);
+        } else if (length == NUMBER_OF_CARDS - 1 &&
+                start == TypeCard.getMinLvl() &&
+                levels.get(levels.size() - 1) == TypeCard.getMaxLvl()) {
+            LinkedList<Card> cards = new LinkedList<>();
+            for (int i = TypeCard.getMinLvl(); i < length; i++) {
+                cards.add(cardsToLvl.get(i));
+            }
+            cards.add(cardsToLvl.get(TypeCard.getMaxLvl()));
+            return create(start + NUMBER_OF_CARDS-2, cards);
+        } else
+            return null;
     }
 
-    private CardCombination create(int max) {
-        for (int i = 0; i < uniqueCards.size(); i++) {
-            if (uniqueCards.get(i).level() == max) {
-                return new SingleCombination(TypeCombination.STRAIGHT, max, uniqueCards.subList(i-5, i));
-            }
-        }
-        return null;
+    @Override
+    public void clear() {
+        setLevels.clear();
+        cardsToLvl.clear();
+        count = 0;
+    }
+
+    private CardCombination create(int max, List<Card> cards) {
+        return new SingleCombination(TypeCombination.STRAIGHT, max, cards);
     }
 }

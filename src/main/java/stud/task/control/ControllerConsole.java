@@ -21,7 +21,7 @@ public class ControllerConsole implements Controller {
         sb.append(" сделал: ");
         sb.append(a.getType());
         sb.append(' ');
-        sb.append(a.getV());
+        sb.append(a.getAddition());
         sb.append('.');
         view.printLN(sb);
     }
@@ -42,6 +42,16 @@ public class ControllerConsole implements Controller {
         sb.append(" :");
         enumerationCards(sb, p.getCards());
         view.printLN(sb);
+    }
+
+    @Override
+    public void messageBy(Player p, String message) {
+
+    }
+
+    @Override
+    public void message(String message) {
+
     }
 
     private void enumerationCards(StringBuilder sb, Collection<Card> cards) {

@@ -1,5 +1,6 @@
 package stud.task.combination.determinant;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import stud.task.card.Card;
 import stud.task.combination.domain.CardCombination;
@@ -17,7 +18,6 @@ import static stud.task.card.TypeCard.TWO;
 class StraightDeterTest {
 
     private CombDeter deter;
-    private List<CardCombination> list;
     private SingleCombination straight;
     private Card[] card;
 
@@ -37,10 +37,24 @@ class StraightDeterTest {
                 new Card(TEN, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        list = deter.get();
-        straight = (SingleCombination) list.get(0);
+        straight = (SingleCombination) deter.get();
 
+        assertNotNull(straight);
         assertEquals(straight.getPriority(), FIVE.getLvl());
+        assertEquals(straight.getCards().size(), StraightDeter.NUMBER_OF_CARDS);
+        Assertions.assertTrue(
+                Arrays.asList(new Card[]
+                        {
+                                new Card(ACE, DIAMONDS),
+                                new Card(ACE, SPADES),
+                                new Card(TWO, CLUBS),
+                                new Card(TWO, DIAMONDS),
+                                new Card(THREE, DIAMONDS),
+                                new Card(FOUR, CLUBS),
+                                new Card(FIVE, HEARTS)
+                        }
+                ).containsAll(straight.getCards())
+        );
     }
 
     @Test
@@ -58,9 +72,7 @@ class StraightDeterTest {
                 new Card(TEN, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        list = deter.get();
-
-        assertTrue(list.isEmpty());
+        assertNull(deter.get());
     }
 
     @Test
@@ -79,10 +91,21 @@ class StraightDeterTest {
                 new Card(KING, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        list = deter.get();
-        straight = (SingleCombination) list.get(0);
-
+        straight = (SingleCombination) deter.get();
+        assertNotNull(straight);
         assertEquals(straight.getPriority(), ACE.getLvl());
+        assertEquals(straight.getCards().size(), StraightDeter.NUMBER_OF_CARDS);
+        Assertions.assertTrue(
+                Arrays.asList(new Card[]
+                        {
+                                new Card(TEN, CLUBS),
+                                new Card(KING, CLUBS),
+                                new Card(ACE, SPADES),
+                                new Card(JACK, DIAMONDS),
+                                new Card(QUEEN, DIAMONDS),
+                        }
+                ).containsAll(straight.getCards())
+        );
     }
 
     @Test
@@ -100,8 +123,6 @@ class StraightDeterTest {
                 new Card(KING, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        list = deter.get();
-
-        assertTrue(list.isEmpty());
+        assertNull(deter.get());
     }
 }

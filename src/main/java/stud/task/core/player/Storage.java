@@ -1,14 +1,47 @@
 package stud.task.core.player;
 
-public interface Storage extends Cloneable {
+import java.util.Objects;
+import java.util.StringJoiner;
+import java.util.UUID;
 
-    boolean takeAway(double sum);
+public class Storage {
 
-    void give(double sum);
+    private long purse;
 
-    double getPurse();
+    public Storage(long purse) {
+        this.purse = purse;
+    }
 
-    double takeAll();
+    private Storage(UUID id, long purse) {
+        this.purse = purse;
+    }
 
-    Storage clone();
+    public boolean pull(long sum) {
+        if (purse - sum < 0 && sum > 0)
+            return false;
+        else
+            purse -= sum;
+        return true;
+    }
+
+    public void give(long sum) {
+        purse += sum;
+    }
+
+    public double getSum() {
+        return purse;
+    }
+
+    public long pullAll() {
+        long temp = purse;
+        purse = 0;
+        return temp;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Storage.class.getSimpleName() + "[", "]")
+                .add("purse=" + purse)
+                .toString();
+    }
 }

@@ -9,60 +9,65 @@ import java.util.*;
 
 public class StraightFlushDeter extends AbstractCombDeter {
 
-    private FlushDeter flushDeter;
+    private StraightDeter straightDeter;
+    private List<List<Card>> cards;
 
     public StraightFlushDeter() {
-        flushDeter = new FlushDeter();
+        straightDeter = new StraightDeter();
+        cards = new ArrayList<>();
+        for (int i = 0; i < SuitCard.length; i++) {
+            cards.add(new LinkedList<>());
+        }
     }
 
     @Override
     public void add(Card card) {
-        flushDeter.add(card);
+        cards.get(card.priority()).add(card);
     }
 
     @Override
-    public List<CardCombination> get() {
-        List<CardCombination> flush = flushDeter.get();
-        if (!flush.isEmpty()) {
-            FlushComb flushComb = (FlushComb) flush.get(0);
-            List<Integer> levels = new ArrayList<>(flushComb.getLevels());
-            Collections.sort(levels);
-            int size = levels.size();
-            int length = levels.get(0) == TypeCard.getMinLvl()
-                    && levels.get(size - 1) == TypeCard.getMaxLvl() ? 1 : 0;
-            for (int i = 0; i < size - 1; i++) {
-                if (levels.get(i + 1) - levels.get(i) == 1) {
-                    length++;
-                } else if (length >= StraightDeter.NUMBER_OF_CARDS-1) {
-                    return of(royalOrStraightFlush(levels.get(i), flushComb.getPriority()));
-                } else length = 0;
+    public CardCombination get() {
+        cards.sort(Comparator.comparingInt(
+                l -> l.isEmpty() ? 1 : -l.get(0).priority()));
+        CardCombination max = new SingleCombination(TypeCombination.UNKNOWN, 0, new LinkedList<>());
+        for (List<Card> l :
+                cards) {
+            if (l.isEmpty() || l.size() < StraightDeter.NUMBER_OF_CARDS)
+                continue;
+            straightDeter.clear();
+            straightDeter.addAll(l);
+            Optional<CardCombination> opt = straightDeter.getOpt();
+            if (opt.isPresent()) {
+                CardCombination comb = royalOrStraightFlush(
+                        (SingleCombination) opt.get()
+                );
+                if (Objects.requireNonNull(comb).compareTo(max) > 0)
+                    max = comb;
             }
-            if (length >= StraightDeter.NUMBER_OF_CARDS-1)
-                return of(royalOrStraightFlush(levels.get(size-1), flushComb.getPriority()));
         }
-        return flush;
+        return max.getType() == TypeCombination.UNKNOWN ? null : max;
     }
 
-    private CardCombination royalOrStraightFlush(int max, int priority) {
-        int maxLvl = TypeCard.getMaxLvl()+1;
-        if (max == TypeCard.getMaxLvl()) {
-            return new SingleCombination(TypeCombination.ROYAL_FLUSH, priority,
-                    createCardList(maxLvl-5, maxLvl, priority));
-        } else {
-            if (maxLvl == TypeCard.getMinLvl()+4) {
-                List<Card> list = createCardList(TypeCard.getMinLvl(), TypeCard.getMinLvl()+4, priority);
-                list.add(new Card(TypeCard.ACE, SuitCard.get(priority)));
-            }
-            return new SingleCombination(TypeCombination.STRAIGHT_FLUSH, max,
-                    createCardList(maxLvl-5, maxLvl, priority));
-        }
+    @Override
+    public void clear() {
+        straightDeter.clear();
+        cards.forEach(List::clear);
     }
 
-    private LinkedList<Card> createCardList(int from, int to, int priority) {
-        LinkedList<Card> list = new LinkedList<>();
-        for (int i = from; i < to; i++) {
-            list.add(new Card(TypeCard.get(i), SuitCard.get(priority)));
-        }
-        return list;
+    private CardCombination royalOrStraightFlush(SingleCombination comb) {
+        if (comb.getType() != TypeCombination.STRAIGHT) return null;
+        List<Card> cards = comb.getCards();
+        if (comb.getPriority() == TypeCard.getMaxLvl())
+            return new SingleCombination(
+                    TypeCombination.ROYAL_FLUSH,
+                    cards.get(0).priority(),
+                    cards
+            );
+        else
+            return new SingleCombination(
+                    TypeCombination.STRAIGHT_FLUSH,
+                    comb.getPriority(),
+                    cards
+            );
     }
 }

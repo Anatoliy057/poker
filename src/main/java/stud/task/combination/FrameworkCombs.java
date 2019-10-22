@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import stud.task.combination.domain.CardCombination;
 import stud.task.combination.domain.TypeCombination;
 import stud.task.service.JsonResource;
-import stud.task.util.Shell;
+import stud.task.util.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,12 +36,12 @@ public class FrameworkCombs {
         }
     }
 
-    public Map<TypeCombination, Shell<CardCombination>> get() {
-        HashMap<TypeCombination, Shell<CardCombination>> subst = new HashMap<>();
+    public Map<TypeCombination, Reference<CardCombination>> get() {
+        HashMap<TypeCombination, Reference<CardCombination>> subst = new HashMap<>();
         for (TypeCombination[] typeCombinations : src) {
-            Shell<CardCombination> shell = new Shell<>();
+            Reference<CardCombination> reference = new Reference<>();
             for (TypeCombination typeCombination : typeCombinations) {
-                subst.put(typeCombination, shell);
+                subst.put(typeCombination, reference);
             }
         }
         return subst;

@@ -18,7 +18,7 @@ public class DeckCards {
         load();
     }
 
-    public void clear() {
+    private void clear() {
         deck.clear();
     }
 

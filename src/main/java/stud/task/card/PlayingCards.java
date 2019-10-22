@@ -68,4 +68,8 @@ public class PlayingCards implements Iterable<List<Card>> {
             }
         };
     }
+
+    public void clear() {
+        cards.forEach(List::clear);
+    }
 }

@@ -5,16 +5,13 @@ import stud.task.combination.domain.CardCombination;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractCombDeter implements CombDeter {
 
-    protected List<CardCombination> of(CardCombination comb) {
-        LinkedList<CardCombination> list = new LinkedList<>();
-        list.add(comb);
-        return list;
-    }
-
-    protected List<CardCombination> empty() {
-        return new LinkedList<>();
+    @Override
+    public Optional<CardCombination> getOpt() {
+        CardCombination comb = get();
+        return comb == null ? Optional.empty() : Optional.of(comb);
     }
 }

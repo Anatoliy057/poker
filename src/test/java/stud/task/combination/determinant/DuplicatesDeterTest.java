@@ -5,39 +5,38 @@ import org.junit.jupiter.api.Test;
 import stud.task.card.Card;
 import stud.task.card.DeckCards;
 import stud.task.combination.domain.CardCombination;
-import stud.task.combination.domain.TypeCombination;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static stud.task.card.SuitCard.*;
 import static stud.task.card.TypeCard.*;
+import static stud.task.combination.domain.TypeCombination.*;
 
 class DuplicatesDeterTest {
 
     private CombDeter deter;
 
     @Test
-    void expect_FOUR_KIND_and_FULL_HOUSE() {
+    void expect_FOUR_KIND() {
         DeckCards deckCards = new DeckCards();
         deter = new DuplicatesDeter();
         while (!deckCards.isEmpty()) {
             deter.add(deckCards.pullOutCard());
         }
-        List<CardCombination> combs = deter.get();
-        boolean k, h;
-        k = h = false;
-        for (CardCombination c :
-                combs) {
-            if (c.getType() == TypeCombination.FOUR_KIND) k = true;
-            if (c.getType() == TypeCombination.FULL_HOUSE) h = true;
-        }
-        Assertions.assertTrue(k);
-        Assertions.assertTrue(h);
+        CardCombination comb = deter.get();
+        Assertions.assertTrue(comb != null && comb.getType() == FOUR_KIND);
+        Assertions.assertTrue(
+                Arrays.asList(new Card[]{
+                        new Card(ACE, DIAMONDS),
+                        new Card(ACE, CLUBS),
+                        new Card(ACE, HEARTS),
+                        new Card(ACE, SPADES)
+                }
+        ).containsAll(comb.getCards()));
     }
 
     @Test
-    void expect_PAIR_and_THREE_and_FULL_HOUSE_and_TWO_PAIR() {
+    void expect_FULL_HOUSE() {
         deter = new DuplicatesDeter();
         Card[] card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(TWO, CLUBS),
@@ -48,31 +47,24 @@ class DuplicatesDeterTest {
                 new Card(ACE, CLUBS)};
 
         deter.addAll(Arrays.asList(card));
-        List<CardCombination> combs = deter.get();
-
-        boolean f, t, p, tp;
-        f = t = p = tp = false;
-        for (CardCombination c :
-                combs) {
-            switch (c.getType()) {
-                case FULL_HOUSE:
-                    f = true;
-                    break;
-                case THREE_KIND:
-                    t = true;
-                    break;
-                case TWO_PAIR:
-                    tp = true;
-                case PAIR:
-                    p = true;
-                    break;
-            }
-        }
-        Assertions.assertTrue(f && t && p && tp);
+        CardCombination comb = deter.get();
+        Assertions.assertNotNull(comb);
+        Assertions.assertEquals(comb.getType(), FULL_HOUSE);
+        Assertions.assertTrue(
+                Arrays.asList(new Card[]
+                        {
+                                new Card(ACE, DIAMONDS),
+                                new Card(ACE, CLUBS),
+                                new Card(THREE, DIAMONDS),
+                                new Card(THREE, CLUBS),
+                                new Card(THREE, HEARTS)
+                        }
+                ).containsAll(comb.getCards())
+        );
     }
 
     @Test
-    void expect_PAIR_and_TWO_PAIR() {
+    void expect_TWO_PAIR() {
         deter = new DuplicatesDeter();
         Card[] card = new Card[]{new Card(TWO, DIAMONDS),
                 new Card(TWO, CLUBS),
@@ -80,20 +72,18 @@ class DuplicatesDeterTest {
                 new Card(ACE, DIAMONDS),
                 new Card(ACE, CLUBS)};
         deter.addAll(Arrays.asList(card));
-        List<CardCombination> combs = deter.get();
-
-        boolean p, tp;
-        p = tp = false;
-        for (CardCombination c :
-                combs) {
-            switch (c.getType()) {
-                case TWO_PAIR:
-                    tp = true;
-                case PAIR:
-                    p = true;
-                    break;
-            }
-        }
-        Assertions.assertTrue(p && tp);
+        CardCombination comb = deter.get();
+        Assertions.assertNotNull(comb);
+        Assertions.assertSame(comb.getType(), TWO_PAIR);
+        Assertions.assertTrue(
+                Arrays.asList(new Card[]
+                        {
+                                new Card(ACE, DIAMONDS),
+                                new Card(ACE, CLUBS),
+                                new Card(TWO, DIAMONDS),
+                                new Card(TWO, CLUBS)
+                        }
+                ).containsAll(comb.getCards())
+        );
     }
 }

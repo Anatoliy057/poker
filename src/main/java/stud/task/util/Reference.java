@@ -2,13 +2,13 @@ package stud.task.util;
 
 import java.util.function.Function;
 
-public class Shell<T> {
+public class Reference<T> {
 
     private T value;
 
-    public Shell() {}
+    public Reference() {}
 
-    public Shell(T value) {
+    public Reference(T value) {
         this.value = value;
     }
 
