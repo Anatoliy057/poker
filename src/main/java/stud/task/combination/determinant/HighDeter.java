@@ -1,7 +1,7 @@
 package stud.task.combination.determinant;
 
 import stud.task.card.Card;
-import stud.task.card.PlayingCards;
+import stud.task.card.CardsTypeToSuit;
 import stud.task.combination.domain.CardCombination;
 import stud.task.combination.domain.SingleCombination;
 import stud.task.combination.domain.TypeCombination;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class HighDeter extends AbstractCombDeter {
 
-    private PlayingCards cards = new PlayingCards();
+    private CardsTypeToSuit cards = new CardsTypeToSuit();
 
     @Override
     public void add(Card card) {

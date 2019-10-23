@@ -17,7 +17,6 @@ class StraightFlushDeterTest {
 
     private CombDeter deter;
     private SingleCombination straight;
-    private DoubleCombination flush;
     private Card[] card;
 
     @Test

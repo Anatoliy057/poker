@@ -1,6 +1,7 @@
 package stud.task.combination.determinant;
 
 import stud.task.card.Card;
+import stud.task.card.CardsSuitToType;
 import stud.task.card.SuitCard;
 import stud.task.combination.domain.CardCombination;
 import stud.task.combination.domain.DoubleCombination;
@@ -13,19 +14,16 @@ public class FlushDeter extends AbstractCombDeter {
 
     public final static int NUMBER_OF_CARDS = 5;
 
-    private List<List<Card>> cards;
+    private CardsSuitToType cards;
     private int count = 0;
 
     public FlushDeter() {
-        cards = new ArrayList<>(SuitCard.length);
-        for (int i = 0; i < SuitCard.length; i++) {
-            cards.add(new LinkedList<>());
-        }
+        cards = new CardsSuitToType();
     }
 
     @Override
     public void add(Card card) {
-        cards.get(SuitCard.length-1 - card.priority()).add(card);
+        cards.add(card);
         count++;
     }
 

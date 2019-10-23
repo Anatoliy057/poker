@@ -1,7 +1,7 @@
 package stud.task.combination.determinant;
 
 import stud.task.card.Card;
-import stud.task.card.PlayingCards;
+import stud.task.card.CardsTypeToSuit;
 import stud.task.combination.domain.*;
 
 import java.util.*;
@@ -10,7 +10,7 @@ import static stud.task.combination.domain.TypeCombination.*;
 
 public class DuplicatesDeter extends AbstractCombDeter {
 
-    private PlayingCards cards;
+    private CardsTypeToSuit cards;
 
     private Queue<List<Card>> pairs = new PriorityQueue<>(
             Comparator.comparingInt(l -> -l.get(0).level()));
@@ -18,7 +18,7 @@ public class DuplicatesDeter extends AbstractCombDeter {
             Comparator.comparingInt(l -> -l.get(0).level()));
 
     public DuplicatesDeter() {
-        cards = new PlayingCards();
+        cards = new CardsTypeToSuit();
     }
 
     @Override
