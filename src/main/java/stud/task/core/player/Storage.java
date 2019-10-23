@@ -28,7 +28,7 @@ public class Storage {
         purse += sum;
     }
 
-    public double getSum() {
+    public long getSum() {
         return purse;
     }
 

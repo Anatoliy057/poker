@@ -6,6 +6,7 @@ import stud.task.card.TypeCard;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class DoubleCombination extends AbstractCardComb {
 
@@ -53,9 +54,8 @@ public class DoubleCombination extends AbstractCardComb {
 
     @Override
     public String toString() {
-        return "DoubleCombination{" + "type=" + getType() +
-                ", lvl1=" + lvl1 +
-                ", lvl2=" + lvl2 +
-                '}';
+        return new StringJoiner(", ", DoubleCombination.class.getSimpleName() + "[", "]")
+                .add("cards=" + cards)
+                .toString();
     }
 }

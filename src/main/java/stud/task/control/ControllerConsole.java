@@ -46,12 +46,16 @@ public class ControllerConsole implements Controller {
 
     @Override
     public void messageBy(Player p, String message) {
-
+        StringBuilder sb = new StringBuilder();
+        sb.append("Игрок :" + p.getDeskPlayer());
+        sb.append(" Сделал заявление :");
+        sb.append(message);
+        view.printLN(sb);
     }
 
     @Override
     public void message(String message) {
-
+        view.printLN(message);
     }
 
     private void enumerationCards(StringBuilder sb, Collection<Card> cards) {

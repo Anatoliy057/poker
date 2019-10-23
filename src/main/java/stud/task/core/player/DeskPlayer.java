@@ -1,18 +1,33 @@
 package stud.task.core.player;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import stud.task.service.JsonResource;
+
 import java.util.Objects;
+import java.util.Random;
 
 public class DeskPlayer {
 
     private String name;
     private String surname;
 
-    public DeskPlayer(String name, String surname) {
-        this.name = name;
-        this.surname = surname;
+    private static JSONArray names;
+    private static Random random;
+
+    static  {
+        String path = "player/names.json";
+
+        JsonResource jr = new JsonResource();
+        names = jr.arrayFromFile(path);
+        random = new Random();
     }
 
-    public DeskPlayer() {
+    public DeskPlayer() {}
+
+    public DeskPlayer(String surname, String name) {
+        this.surname = surname;
+        this.name = name;
     }
 
     public String getName() {
@@ -29,6 +44,13 @@ public class DeskPlayer {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public static DeskPlayer randomInstance() {
+        int index = random.nextInt(names.length());
+        JSONObject name = names.getJSONObject(index);
+        return new DeskPlayer(name.getString("name"),
+                name.getString("surname"));
     }
 
     @Override

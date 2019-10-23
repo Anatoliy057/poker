@@ -1,8 +1,8 @@
 {
     "prefix" : "stud.task.core.stage.",
-    "postfix" : "Stage.java",
-    "stage" : [
-        "InitTexasHoldem",
+    "postfix" : "Stage",
+    "objects" : [
+        "InitTexasHold",
         "Blind",
         "PreFlop",
         "Trade",

@@ -1,4 +1,4 @@
-package stud.task.core.stages;
+package stud.task.core.stage;
 
 import stud.task.core.GameItems;
 

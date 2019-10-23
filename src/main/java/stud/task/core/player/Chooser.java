@@ -1,5 +1,7 @@
 package stud.task.core.player;
 
+import stud.task.domain.Response;
+
 import java.util.EventListener;
 import java.util.HashMap;
 
@@ -9,5 +11,7 @@ public interface Chooser extends EventListener {
 
     TypeChooser getType();
 
-    void notify(HashMap<String, Object> bet);
+    void notifyStatus(Boolean success);
+
+    void notifyState(Response response);
 }

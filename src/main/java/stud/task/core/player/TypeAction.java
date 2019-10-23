@@ -1,7 +1,7 @@
 package stud.task.core.player;
 
 public enum TypeAction {
-    CALL(false),
+    CALL(true),
     CHECK(false),
     RAISE(true),
     FOLD(false),

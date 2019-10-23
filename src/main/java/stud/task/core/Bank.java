@@ -13,10 +13,10 @@ public class Bank {
 
     public Bank(Collection<UUID> ids) {
         participants = new HashMap<>();
-        ids.forEach(id -> participants.put(id, new Container<>((long) 0)));
+        ids.forEach(id -> participants.put(id, new Container<>(0L)));
     }
 
-    public double getBank() {
+    public long getBank() {
         return bank;
     }
 
@@ -41,9 +41,13 @@ public class Bank {
         increase(pay);
     }
 
+    public long shareBy(UUID id) {
+        return participants.get(id).getValue();
+    }
+
     public void distribute(Map<UUID, Storage> winners) {
         long prize = bank/winners.size();
-        AtomicReference<Storage> first = null;
+        AtomicReference<Storage> first = new AtomicReference<>();
         winners.forEach((id, s) -> {
             if (participants.containsKey(id)) {
                 if (first.get() == null) {

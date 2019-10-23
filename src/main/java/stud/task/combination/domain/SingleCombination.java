@@ -6,6 +6,7 @@ import stud.task.card.TypeCard;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class SingleCombination extends AbstractCardComb {
 
@@ -36,8 +37,8 @@ public class SingleCombination extends AbstractCardComb {
 
     @Override
     public String toString() {
-        return "SingleCombination{" +
-                "priority=" + priority +
-                "} " + super.toString();
+        return new StringJoiner(", ", SingleCombination.class.getSimpleName() + "[", "]")
+                .add("cards=" + cards)
+                .toString();
     }
 }

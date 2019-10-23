@@ -16,12 +16,15 @@ public class GameItems {
     private Controller controller;
     private List<Player> players;
     private DeckCards deck;
+    private ActionRequirements actCheck;
 
     public GameItems(Bank bank, Controller controller, List<Player> players, DeckCards deck) {
         this.bank = bank;
         this.controller = controller;
         this.players = players;
         this.deck = deck;
+        actCheck = new ActionRequirements();
+        items = new HashMap<>();
     }
 
     public Bank getBank() {
@@ -50,5 +53,9 @@ public class GameItems {
 
     public DeckCards getDeck() {
         return deck;
+    }
+
+    public ActionRequirements getActCheck() {
+        return actCheck;
     }
 }

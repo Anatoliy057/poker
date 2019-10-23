@@ -6,25 +6,26 @@ import java.util.StringJoiner;
 public class Action {
 
     private TypeAction type;
-    private Object addition;
+    private Long addition;
 
     public Action(TypeAction type) {
         this.type = type;
     }
 
-    public Action(TypeAction type, Object o) {
+    public Action(TypeAction type, Long o) {
         this.type = type;
+        addition = o;
     }
 
     public TypeAction getType() {
         return type;
     }
 
-    public Object getAddition() {
+    public Long getAddition() {
         return addition;
     }
 
-    public void setAddition(Object addition) {
+    public void setAddition(Long addition) {
         this.addition = addition;
     }
 

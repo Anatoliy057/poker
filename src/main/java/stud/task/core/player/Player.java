@@ -26,6 +26,15 @@ public class Player {
         id = UUID.randomUUID();
     }
 
+    public Player(Storage storage, Chooser chooser, List<CombDeter> deters) {
+        this.storage = storage;
+        this.chooser = chooser;
+        combs = new ListComb(deters);
+        cards = new LinkedList<>();
+        id = UUID.randomUUID();
+        deskPlayer = DeskPlayer.randomInstance();
+    }
+
     public Storage getStorage() {
         return storage;
     }

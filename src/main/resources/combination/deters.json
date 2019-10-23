@@ -5,6 +5,8 @@
     "Duplicates",
     "Flush",
     "Straight",
-    "StraightFlush"
+    "StraightFlush",
+    "Pair",
+    "High"
   ]
 }
