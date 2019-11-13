@@ -5,19 +5,13 @@ import java.util.Map;
 
 public enum SuitCard {
 
-    /**
-     * @param priority must be < length and > 0;
-     * @param length is count objects;
-     *
-     * @author Ay57
-     */
-
-    DIAMONDS(3),
-    HEARTS(2),
-    SPADES(1),
-    CLUBS(0);
+    DIAMONDS(3, "♦"),
+    HEARTS(2, "♥"),
+    SPADES(1, "♠"),
+    CLUBS(0, "♣");
 
     private final int priority;
+    private final String suit;
     public final static int length = values().length;
     private static final Map<Integer, SuitCard> map = new HashMap<>();
 
@@ -28,8 +22,9 @@ public enum SuitCard {
         }
     }
 
-    SuitCard(int priority) {
+    SuitCard(int priority, String suit) {
         this.priority = priority;
+        this.suit = suit;
     }
 
     public static SuitCard get(int n) {
@@ -42,5 +37,10 @@ public enum SuitCard {
 
     public int comparePriorTo(SuitCard o) {
         return getPriority() - o.getPriority();
+    }
+
+    @Override
+    public String toString() {
+        return suit;
     }
 }

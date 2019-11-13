@@ -2,31 +2,26 @@ package stud.task.card;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 public enum TypeCard {
 
-    /**
-     * @param lvl must be < length and > 0;
-     * @param length is count objects;
-     *
-     * @author Ay57
-     */
-
-    TWO(0),
-    THREE(1),
-    FOUR(2),
-    FIVE(3),
-    SIX(4),
-    SEVEN(5),
-    EIGHT(6),
-    NINE(7),
-    TEN(8),
-    JACK(9),
-    QUEEN(10),
-    KING(11),
-    ACE(12);
+    TWO(0, "2"),
+    THREE(1, "3"),
+    FOUR(2, "4"),
+    FIVE(3, "5"),
+    SIX(4, "6"),
+    SEVEN(5, "7"),
+    EIGHT(6, "8"),
+    NINE(7, "9"),
+    TEN(8, "10"),
+    JACK(9, "J"),
+    QUEEN(10, "Q"),
+    KING(11, "K"),
+    ACE(12, "A");
 
     private final int lvl;
+    private final String type;
     public final static int length = values().length;
     private static final Map<Integer, TypeCard> map = new HashMap<>();
 
@@ -37,8 +32,9 @@ public enum TypeCard {
         }
     }
 
-    TypeCard(int lvl){
+    TypeCard(int lvl, String type){
         this.lvl = lvl;
+        this.type = type;
     }
 
     public int getLvl() {
@@ -79,4 +75,8 @@ public enum TypeCard {
         return sum;
     }
 
+    @Override
+    public String toString() {
+        return type;
+    }
 }
