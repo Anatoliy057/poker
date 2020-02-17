@@ -3,8 +3,8 @@ package stud.task.combination.determinant;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import stud.task.card.Card;
-import stud.task.card.DeckCards;
 import stud.task.combination.domain.CardCombination;
+import stud.task.core.component.DeckCards;
 
 import java.util.Arrays;
 
@@ -21,7 +21,7 @@ class DuplicatesDeterTest {
         DeckCards deckCards = new DeckCards();
         deter = new DuplicatesDeter();
         while (!deckCards.isEmpty()) {
-            deter.add(deckCards.pullOutCard());
+            deter.add(deckCards.poll());
         }
         CardCombination comb = deter.get();
         Assertions.assertTrue(comb != null && comb.getType() == FOUR_KIND);

@@ -1,10 +1,13 @@
 package stud.task.card;
 
 import com.sun.istack.internal.NotNull;
+import org.json.*;
+import stud.task.core.player.TypeAction;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
-public class Card implements Comparable<Card> {
+public class Card implements Comparable<Card>, JSONString {
 
     @NotNull
     private TypeCard type;
@@ -14,6 +17,11 @@ public class Card implements Comparable<Card> {
     public Card(TypeCard type, SuitCard suit) {
         this.type = type;
         this.suit = suit;
+    }
+
+    public Card(JSONObject o) {
+        type = TypeCard.get(o.getInt("type"));
+        suit = SuitCard.get(o.getInt("suit"));
     }
 
     public TypeCard getType() {
@@ -57,5 +65,14 @@ public class Card implements Comparable<Card> {
     @Override
     public String toString() {
         return suit + ":" + type;
+    }
+
+    @Override
+    public String toJSONString() {
+        return new JSONStringer().object()
+                .key("type").value(type.getLvl())
+                .key("suit").value(suit.getPriority())
+                .endObject()
+                .toString();
     }
 }

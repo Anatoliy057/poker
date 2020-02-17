@@ -26,6 +26,11 @@ public class StraightFlushDeter extends AbstractCombDeter {
     }
 
     @Override
+    public boolean remove(Card card) {
+        return cards.get(card.priority()).remove(card);
+    }
+
+    @Override
     public CardCombination get() {
         cards.sort(Comparator.comparingInt(
                 l -> l.isEmpty() ? 1 : -l.get(0).priority()));

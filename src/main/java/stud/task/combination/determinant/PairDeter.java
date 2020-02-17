@@ -18,6 +18,11 @@ public class PairDeter extends AbstractCombDeter {
     }
 
     @Override
+    public boolean remove(Card card) {
+        return cards.remove(card);
+    }
+
+    @Override
     public CardCombination get() {
         LinkedList<List<Card>> pairs = new LinkedList<>();
         Queue<List<Card>> triples = new LinkedList<>();

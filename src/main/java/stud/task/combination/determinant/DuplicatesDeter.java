@@ -27,6 +27,11 @@ public class DuplicatesDeter extends AbstractCombDeter {
     }
 
     @Override
+    public boolean remove(Card card) {
+        return cards.remove(card);
+    }
+
+    @Override
     public CardCombination get() {
         Queue<CardCombination> combs = new PriorityQueue<>((c1, c2) -> -c1.compareTo(c2));
         for (List<Card> list :

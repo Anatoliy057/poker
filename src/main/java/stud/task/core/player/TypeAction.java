@@ -1,21 +1,32 @@
 package stud.task.core.player;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum TypeAction {
-    CALL(true),
-    CHECK(false),
-    RAISE(true),
-    FOLD(false),
-    ALL_IN(true),
-    YES(false),
-    NO(false);
+    CALL,
+    BET,
+    CHECK,
+    RAISE,
+    FOLD,
+    ALL_IN,
 
-    private boolean addition;
+    YES,
+    NO,
+    SAVE;
 
-    TypeAction(boolean addition) {
-        this.addition = addition;
+    private final static Map<String, TypeAction> mapValueOf;
+
+    static {
+        mapValueOf = new HashMap<>();
+        for (TypeAction t :
+                values()) {
+            mapValueOf.put(t.toString().toLowerCase(), t);
+        }
     }
 
-    public boolean isAddition() {
-        return addition;
+    public static TypeAction fromString(String s) {
+        return mapValueOf.get(s.toLowerCase());
     }
+
 }

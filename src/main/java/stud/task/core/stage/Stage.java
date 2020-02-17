@@ -1,9 +1,10 @@
 package stud.task.core.stage;
 
-import stud.task.core.GameItems;
+import stud.task.core.component.Game;
 
 public interface Stage  {
 
-    void start(GameItems gi);
+    void start(Game game);
 
+    TypeStage type();
 }

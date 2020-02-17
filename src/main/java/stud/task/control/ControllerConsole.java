@@ -1,7 +1,6 @@
 package stud.task.control;
 
 import stud.task.card.Card;
-import stud.task.core.player.Action;
 import stud.task.core.player.DeskPlayer;
 import stud.task.core.player.Player;
 import stud.task.view.ConsoleView;
@@ -11,20 +10,6 @@ import java.util.Collection;
 public class ControllerConsole implements Controller {
 
     private ConsoleView view = new ConsoleView();
-
-    @Override
-    public void actionBy(Player p, Action a) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(p.getDeskPlayer().getName());
-        sb.append(' ');
-        sb.append(p.getDeskPlayer().getSurname());
-        sb.append(" сделал: ");
-        sb.append(a.getType());
-        sb.append(' ');
-        sb.append(a.getAddition());
-        sb.append('.');
-        view.printLN(sb);
-    }
 
     @Override
     public void cardTable(Collection<Card> cards) {
@@ -47,9 +32,13 @@ public class ControllerConsole implements Controller {
     @Override
     public void messageBy(Player p, String message) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Игрок :" + p.getDeskPlayer());
-        sb.append(" Сделал заявление :");
-        sb.append(message);
+        sb.append("Игрок ")
+                .append(p.getDeskPlayer().getName())
+                .append(' ')
+                .append(p.getDeskPlayer().getSurname())
+                .append(':')
+                .append(' ')
+                .append(message);
         view.printLN(sb);
     }
 

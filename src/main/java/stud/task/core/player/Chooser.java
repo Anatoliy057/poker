@@ -1,17 +1,12 @@
 package stud.task.core.player;
 
-import stud.task.domain.Response;
+import stud.task.core.component.GameInfo;
 
-import java.util.EventListener;
-import java.util.HashMap;
+public interface Chooser {
 
-public interface Chooser extends EventListener {
-
-    Action getAction();
+    Action action(Player p, GameInfo gi);
 
     TypeChooser getType();
 
-    void notifyStatus(Boolean success);
-
-    void notifyState(Response response);
+    Choosers getChooser();
 }

@@ -1,57 +1,31 @@
 package stud.task.core.player;
 
-import java.util.Objects;
-import java.util.StringJoiner;
+import stud.task.core.command.Command;
+
+import java.util.Optional;
 
 public class Action {
 
     private TypeAction type;
-    private Long addition;
+    private Optional<Command> optCommand;
 
-    public Action(TypeAction type) {
-        this.type = type;
-    }
-
-    public Action(TypeAction type, Long o) {
-        this.type = type;
-        addition = o;
+    public Action() {
+        optCommand = Optional.empty();
     }
 
     public TypeAction getType() {
         return type;
     }
 
-    public Long getAddition() {
-        return addition;
+    public void setType(TypeAction type) {
+        this.type = type;
     }
 
-    public void setAddition(Long addition) {
-        this.addition = addition;
+    public Optional<Command> getOptCommand() {
+        return optCommand;
     }
 
-    public boolean hasAddition() {
-        return type.isAddition();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Action action = (Action) o;
-        return type == action.type &&
-                Objects.equals(addition, action.addition);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, addition);
-    }
-
-    @Override
-    public String toString() {
-        return new StringJoiner(", ", Action.class.getSimpleName() + "[", "]")
-                .add("type=" + type)
-                .add("addition=" + addition)
-                .toString();
+    public void setOptCommand(Command optCommand) {
+        this.optCommand = Optional.ofNullable(optCommand);
     }
 }

@@ -19,6 +19,11 @@ public class HighDeter extends AbstractCombDeter {
     }
 
     @Override
+    public boolean remove(Card card) {
+        return cards.remove(card);
+    }
+
+    @Override
     public CardCombination get() {
         Card max = null;
         for (List<Card> l :

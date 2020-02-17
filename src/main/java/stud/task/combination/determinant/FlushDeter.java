@@ -28,6 +28,11 @@ public class FlushDeter extends AbstractCombDeter {
     }
 
     @Override
+    public boolean remove(Card card) {
+        return cards.remove(card);
+    }
+
+    @Override
     public CardCombination get() {
         if (count < NUMBER_OF_CARDS) return null;
         for (List<Card> l : cards) {

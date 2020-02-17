@@ -1,88 +1,97 @@
 package stud.task.core.stage;
 
-import stud.task.control.Controller;
-import stud.task.core.ActionRequirements;
-import stud.task.core.Bank;
-import stud.task.core.GameItems;
+import stud.task.core.command.PrepareTrade;
+import stud.task.core.command.EndStage;
+import stud.task.core.command.TakeBet;
+import stud.task.core.component.Bank;
+import stud.task.core.component.Game;
+import stud.task.core.component.GameInfo;
 import stud.task.core.player.Action;
-import stud.task.core.player.Chooser;
 import stud.task.core.player.Player;
-import stud.task.domain.Response;
-import stud.task.util.Container;
+import stud.task.core.player.TypeAction;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 public class TradeStage implements Stage{
 
-    @SuppressWarnings("unchecked")
     @Override
-    public void start(GameItems gi) {
-        List<Player> cPlayers = (List<Player>) gi.getItem("list_curPlayers").get();
-        Controller cv = gi.getController();
-        Bank b = gi.getBank();
-        ActionRequirements ar = gi.getActCheck();
-        ar.setUpperLimit(minPurse(cPlayers));
-        LinkedList<Player> removed = new LinkedList<>();
-        boolean reset;
-        do {
-            reset = false;
-            for (Player p :
-                    cPlayers) main : {
-                Action a;
-                Chooser ch = p.getChooser();
-                while (true) {
-                    a = ch.getAction();
-                    if (ar.checkAction(a, p)) {
-                        ch.notifyStatus(true);
-                        cv.actionBy(p, a);
-                        cPlayers.forEach(player -> player.getChooser().notifyState(new Response(ar.getUpperLimit(), ar.getLowerLimit(),
-                                b.getBank(), player.getStorage().getSum())));
-                        break;
-                    } else {
-                        p.getChooser().notifyStatus(false);
-                    }
-                    cPlayers.forEach(player -> player.getChooser().notifyState(new Response(ar.getUpperLimit(), ar.getLowerLimit(),
-                            b.getBank(), player.getStorage().getSum())));
+    public void start(Game game) {
+        List<Player> party = new LinkedList<>(game.getCurPlayers());
+        Bank bank = game.getBank();
+        boolean[] checkers = new boolean[party.size()];
+        int index = 0;
+        Player t = game.getTargetPlayer();
+
+        while ((bank.getBetBy(t.getId()) != game.getCurBet() || game.getCurBet() == 0) && !and(checkers)) {
+            Set<TypeAction> possible = new HashSet<>();
+            possible.add(TypeAction.SAVE);
+            possible.add(TypeAction.FOLD);
+            if (game.getCurBet() == 0)
+                possible.add(TypeAction.CHECK);
+            if (t.getStorage().getSum() >= game.getCurBet()) {
+                if (t.getStorage().getSum() == game.getCurBet()) {
+                    possible.add(TypeAction.CALL);
+                } else {
+                    possible.add(TypeAction.CALL);
+                    possible.add(TypeAction.BET);
+                    possible.add(TypeAction.RAISE);
+                    possible.add(TypeAction.ALL_IN);
                 }
-                switch (a.getType()) {
-                    case CALL:
-                        b.setBy(p.getId(), a.getAddition());
-                        break;
-                    case CHECK:
-                        break;
-                    case RAISE:
-                        reset = true;
-                        b.setBy(p.getId(), a.getAddition());
-                        break;
-                    case FOLD:
-                        if (cPlayers.size() - removed.size() == 2)
-                            removed.add(p);
-                        else {
-                            reset = false;
-                            break main;
-                        }
-                        break;
-                    case ALL_IN:
-                        b.setBy(p.getId(), a.getAddition());
-                        break;
-                }
-                cv.message("Bank : "+b.getBank());
             }
-            cPlayers.removeAll(removed);
-            removed.clear();
-        } while (reset);
-        ar.clear();
-        cPlayers.forEach(player -> player.getChooser().notifyState(new Response(ar.getUpperLimit(), ar.getLowerLimit(),
-                b.getBank(), player.getStorage().getSum())));
+            GameInfo gi = game.getInfo();
+            gi.setPossible(possible);
+            Action action = t.getChooser().action(t, gi);
+            action.getOptCommand().ifPresent(game::doCommand);
+            switch (action.getType()) {
+                case CHECK:
+                    checkers[index] = true;
+                    index = (index + 1) % checkers.length;
+                    break;
+                case YES:
+                case NO:
+                case SAVE:
+                    continue;
+            }
+            t = game.nextTPlayer();
+        }
+
+        TypeStage type = null;
+
+        switch(game.getPrevStage()) {
+            case PREFLOP:
+                type = TypeStage.FLOP;
+                break;
+            case FLOP:
+                type = TypeStage.TURN;
+                break;
+            case TURN:
+                type = TypeStage.RIVER;
+                break;
+            case RIVER:
+                type = TypeStage.SHOWDOWN;
+                break;
+            case SHOWDOWN:
+                break;
+        }
+
+        game.doCommand(new PrepareTrade());
+        game.doCommand(new TakeBet(party));
+        game.doCommand(new EndStage(type));
     }
 
-    private long minPurse(List<Player> players) {
-        Container<Long> min = new Container<>(Long.MAX_VALUE);
-        players.forEach(p -> {
-            long pur = p.getStorage().getSum();
-            if (pur < min.getValue()) min.setValue(pur);
-        });
-        return min.getValue();
+    public boolean and(boolean[] arr) {
+        boolean res = true;
+        for (int i = 0; i < arr.length; i++) {
+            res &= arr[i];
+        }
+        return res;
+    }
+
+    @Override
+    public TypeStage type() {
+        return TypeStage.TRADE;
     }
 }

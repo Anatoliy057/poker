@@ -12,8 +12,8 @@ public class StraightDeter extends AbstractCombDeter {
 
     public static final int NUMBER_OF_CARDS = 5;
 
-    private HashSet<Integer> setLevels = new HashSet<>();
-    private HashMap<Integer, Card> cardsToLvl = new HashMap<>();
+    private Set<Integer> setLevels = new HashSet<>();
+    private Map<Integer, Card> cardsToLvl = new HashMap<>();
     private int count = 0;
 
     @Override
@@ -22,6 +22,11 @@ public class StraightDeter extends AbstractCombDeter {
             count++;
             cardsToLvl.put(card.level(), card);
         }
+    }
+
+    @Override
+    public boolean remove(Card card) {
+        return setLevels.remove(card.level()) && cardsToLvl.remove(card.level(), card) && (--count) >= 0;
     }
 
     @Override

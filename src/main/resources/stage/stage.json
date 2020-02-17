@@ -2,7 +2,6 @@
     "prefix" : "stud.task.core.stage.",
     "postfix" : "Stage",
     "objects" : [
-        "InitTexasHold",
         "Blind",
         "PreFlop",
         "Trade",

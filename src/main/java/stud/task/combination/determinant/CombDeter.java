@@ -7,16 +7,19 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface CombDeter {
+public interface CombDeter  {
 
     void add(Card card);
+
+    boolean remove(Card card);
 
     CardCombination get();
 
     void clear();
 
     default Optional<CardCombination> getOpt() {
-        return Optional.of(get());
+        CardCombination comb = get();
+        return comb == null ? Optional.empty() : Optional.of(comb);
     }
 
     default void addAll(Collection<Card> cards) {

@@ -1,6 +1,5 @@
 package stud.task.core.player;
 
-import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.UUID;
 
@@ -12,11 +11,7 @@ public class Storage {
         this.purse = purse;
     }
 
-    private Storage(UUID id, long purse) {
-        this.purse = purse;
-    }
-
-    public boolean pull(long sum) {
+    public boolean take(long sum) {
         if (purse - sum < 0 && sum > 0)
             return false;
         else
@@ -24,7 +19,7 @@ public class Storage {
         return true;
     }
 
-    public void give(long sum) {
+    public void pull(long sum) {
         purse += sum;
     }
 
@@ -32,7 +27,7 @@ public class Storage {
         return purse;
     }
 
-    public long pullAll() {
+    public long takeAll() {
         long temp = purse;
         purse = 0;
         return temp;

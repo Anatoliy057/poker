@@ -1,6 +1,7 @@
 package stud.task.card;
 
 import org.junit.jupiter.api.Test;
+import stud.task.core.component.DeckCards;
 
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +19,7 @@ class CardsSuitToTypeTest {
         cards = new CardsSuitToType();
 
         while (!deck.isEmpty()) {
-            cards.add(deck.pullOutCard());
+            cards.add(deck.poll());
         }
 
         List<Card> sortedCards = cards.listCard();

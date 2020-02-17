@@ -1,6 +1,7 @@
 package stud.task.card;
 
 import org.junit.jupiter.api.Test;
+import stud.task.core.component.DeckCards;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,12 +17,12 @@ class DeckCardsTest {
         List<Card> list2 = new LinkedList<>();
 
         while (!deck.isEmpty()) {
-            list1.add(deck.pullOutCard());
+            list1.add(deck.poll());
         }
 
         deck.reset();
         while (!deck.isEmpty()) {
-            list2.add(deck.pullOutCard());
+            list2.add(deck.poll());
         }
 
         //full decks

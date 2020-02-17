@@ -26,4 +26,8 @@ public class ResLoader {
     public Path getPath(String name) {
         return getFile(name).toPath();
     }
+
+    public String getDirectory() {
+        return Objects.requireNonNull(loader.getResource("")).getPath();
+    }
 }

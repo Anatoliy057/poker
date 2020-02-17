@@ -8,10 +8,9 @@ import stud.task.util.FactoryObjects;
 import stud.task.util.Reference;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ListComb {
-
-    private static FactoryObjects<CombDeter> fd;
 
     private List<CombDeter> deters;
     private Map<TypeCombination, Reference<CardCombination>> subst;
@@ -30,33 +29,51 @@ public class ListComb {
         deters.forEach(d -> d.addAll(cards));
     }
 
-    public List<CardCombination> getAllCombs() {
-        List<CardCombination> combs = new LinkedList<>();
-        deters.forEach(d -> d.getOpt().ifPresent(combs::add));
-        return combs;
+    public boolean remove(Card card) {
+        boolean res = true;
+        for (CombDeter cd :
+                deters) {
+            res &= cd.remove(card);
+        }
+        return res;
     }
 
-    public List<CardCombination> getCombs() {
-        deters.forEach(d -> {
-           Optional<CardCombination> opt = d.getOpt();
-           if (opt.isPresent()) {
-               CardCombination comb = opt.get();
-               Reference<CardCombination> reference = subst.get(comb.getType());
-               reference.func(v -> {
-                   if (v == null) return comb;
-                   int comp = comb.compareTo(v);
-                   if (comp >= 0) {
-                       return comb;
-                   } else {
-                       return v;
-                   }
-               });
-           }
-        });
-        Set<Reference<CardCombination>> set = new HashSet<>(subst.values());
-        List<CardCombination> combs = new LinkedList<>();
-        set.forEach(e -> combs.add(e.getValue()));
-        return combs;
+    public boolean removeAll(Collection<Card> cards) {
+        boolean res = true;
+        for (Card c :
+                cards) {
+            res &= remove(c);
+        }
+        return res;
+    }
+
+    public List<CardCombination> getAllCombs() {
+        return deters.stream()
+                .map(CombDeter::getOpt)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+    }
+
+    public List<CardCombination> getFilterCombs() {
+        deters.stream()
+                .map(CombDeter::getOpt)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(comb -> {
+                            Reference<CardCombination> reference = subst.get(comb.getType());
+                            reference.func(v -> {
+                                if (v == null) return comb;
+                                int comp = comb.compareTo(v);
+                                if (comp >= 0) {
+                                    return comb;
+                                } else {
+                                    return v;
+                                }
+                            });
+                        }
+                );
+        return new HashSet<>(subst.values()).stream().map(Reference::getValue).collect(Collectors.toList());
     }
 
     public void clear() {

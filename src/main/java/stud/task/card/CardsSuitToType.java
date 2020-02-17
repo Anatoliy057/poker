@@ -27,6 +27,12 @@ public class CardsSuitToType implements Iterable<List<Card>> {
         }
     }
 
+    public boolean remove(Card card) {
+        Map<TypeCard, Card> map = cards.remove(card.getSuit());
+        if (map == null) return false;
+        return map.remove(card.getType(), card);
+    }
+
     public List<Card> listCard() {
         LinkedList<Card> cards = new LinkedList<>();
         for (Map<TypeCard, Card> m :
